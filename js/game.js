@@ -3,7 +3,7 @@ let world;
 let keyboard = new Keyboard();
 
 
-function init() {
+function startGame() {
     canvas = document.getElementById('canvas');
     world = new World(canvas, keyboard);
 
@@ -11,50 +11,52 @@ function init() {
 
 }
 
-
-
 window.addEventListener("keydown", (e) => {
-    if (e.keyCode == 39) {
-        keyboard.RIGHT = true;
-    }
-    if (e.keyCode == 37) {
-        keyboard.LEFT = true;
-    }
-    if (e.keyCode == 38) {
-        keyboard.UP = true;
-    }
-    if (e.keyCode == 40) {
-        keyboard.DOWN = true;
-    }
-    if (e.keyCode == 40) {
-        keyboard.DOWN = true;
-    }
-    if (e.keyCode == 32) {
-        keyboard.SPACE = true;
+    switch (e.code) {
+        case "ArrowRight":
+            keyboard.RIGHT = true;
+            break;
+        case "ArrowLeft":
+            keyboard.LEFT = true;
+            break;
+        case "ArrowUp":
+            keyboard.UP = true;
+            break;
+        case "ArrowDown":
+            keyboard.DOWN = true;
+            break;
+        case "Space":
+            keyboard.SPACE = true;
+            break;
+        case "Throw":
+            keyboard.THROW = true;
+            break;
     }
 
-    console.log(e);
+    console.log(e.code);
 });
 
 window.addEventListener("keyup", (e) => {
-    if (e.keyCode == 39) {
-        keyboard.RIGHT = false;
-    }
-    if (e.keyCode == 37) {
-        keyboard.LEFT = false;
-    }
-    if (e.keyCode == 38) {
-        keyboard.UP = false;
-    }
-    if (e.keyCode == 40) {
-        keyboard.DOWN = false;
-    }
-    if (e.keyCode == 40) {
-        keyboard.DOWN = false;
-    }
-    if (e.keyCode == 32) {
-        keyboard.SPACE = false;
+    switch (e.code) {
+        case "ArrowRight":
+            keyboard.RIGHT = false;
+            break;
+        case "ArrowLeft":
+            keyboard.LEFT = false;
+            break;
+        case "ArrowUp":
+            keyboard.UP = false;
+            break;
+        case "ArrowDown":
+            keyboard.DOWN = false;
+            break;
+        case "Space":
+            keyboard.SPACE = false;
+            break;
+        case "Throw":
+            keyboard.THROW = false;
+            break;
     }
 
-    console.log(e);
+    console.log(e.code);
 });

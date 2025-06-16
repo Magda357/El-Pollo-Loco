@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Wendy+One&display=swap');
+
 body {
     display: flex;
     flex-direction: column;
@@ -5,8 +7,74 @@ body {
 
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Wendy One', sans-serif;
+    background-image: url('/img/5_background/5381.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: sans-serif;
+    text-align: center;
+}
 
 canvas {
-
     background-color: black;
+
+}
+
+
+h1 {
+    font-family: 'Rock Salt', cursive, 'Georgia', serif;
+    font-size: clamp(2rem, 6vw, 5rem);
+    text-align: center;
+    background: linear-gradient(90deg, #5b9a2b, #d6de37, #ec7a0f);
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    letter-spacing: 0.1em;
+    text-shadow: 1px 1px 0 #00000033;
+    animation: shine 3s linear infinite, swing 2.5s ease-in-out infinite;
+    display: inline-block;
+    transform-origin: top center;
+}
+
+/* Анимация градиента */
+@keyframes shine {
+    0% {
+        background-position: 0% 0%;
+    }
+
+    100% {
+        background-position: 200% 0%;
+    }
+}
+
+/* Анимация покачивания */
+@keyframes swing {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    20% {
+        transform: rotate(0.5deg);
+    }
+
+    40% {
+        transform: rotate(-1deg);
+    }
+
+    60% {
+        transform: rotate(1deg);
+    }
+
+    80% {
+        transform: rotate(-0.5deg);
+    }
+
+    100% {
+        transform: rotate(0deg);
+    }
 }

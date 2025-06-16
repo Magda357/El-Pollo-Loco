@@ -1,9 +1,10 @@
 class World {
-
     character = new Character();
-    enemies = level1.enemies;
+
+    level = level1;
+    /*enemies = level1.enemies;
     clouds = level1.clouds;
-    backgroundObjects = level1.backgroundObjects;
+    backgroundObjects = level1.backgroundObjects;*/
     canvas;
     ctx; //context
     keyboard;
@@ -13,6 +14,7 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+
         this.draw();
         this.setWorld();
 
@@ -23,16 +25,25 @@ class World {
     }
 
     draw() {
+
+
+
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 
         this.ctx.translate(this.camera_x, 0);
 
-        this.addObjectsToMap(this.backgroundObjects);
-        this.addObjectsToMap(this.clouds);
+        this.addObjectsToMap(this.level.backgroundObjects);
+        this.addObjectsToMap(this.level.clouds);
         this.addToMap(this.character);
-        this.addObjectsToMap(this.enemies);
+        this.addObjectsToMap(this.level.enemies);
+        this.addObjectsToMap(this.level.smallChickens);
+
+        this.addObjectsToMap(this.level.bottles);
+        this.addObjectsToMap(this.level.coins);
 
         this.ctx.translate(-this.camera_x, 0);
+
+
 
 
         //Draw() wird immer aufgerufen
@@ -51,16 +62,30 @@ class World {
 
     addToMap(mo) {
         if (mo.otherDirection) {
-            this.ctx.save();
-            this.ctx.translate(mo.width, 0);
-            this.ctx.scale(-1, 1);
-            mo.x = mo.x * -1;
+            this.flipImage(mo)
         }
-        this.ctx.drawImage(mo.img, mo.x, mo.y, mo.width, mo.height);
+
+        mo.draw(this.ctx);
+        mo.drawFrame(this.ctx);
         if (mo.otherDirection) {
-            mo.x = mo.x * -1;
-            this.ctx.restore();
+            this.flipImageBack(mo);
         }
+
+
+    }
+    flipImage(mo) {
+
+        this.ctx.save();
+        this.ctx.translate(mo.width, 0);
+        this.ctx.scale(-1, 1);
+        mo.x = mo.x * -1;
+    }
+
+    flipImageBack(mo) {
+
+        mo.x = mo.x * -1;
+        this.ctx.restore();
+
 
     }
 }

@@ -1,12 +1,27 @@
 const level1 = new Level(
-    [
-        new Chicken(),
-        new Chicken(),
-        new Chicken()
-    ],
+
+
 
     [
-        new Cloud()
+        new Chicken(),
+        new Chicken(),
+        new Chicken(),
+        new Chicken(),
+        new Chicken(),
+        new Chicken(),
+        new Chicken(),
+        new Endboss()
+    ],
+
+
+
+    [
+        new Cloud(300),
+        new Cloud(1000),
+        new Cloud(1700),
+        new Cloud(2300),
+
+
 
     ],
 
@@ -34,5 +49,31 @@ const level1 = new Level(
         new BackgroundObject('img/5_background/layers/2_second_layer/2.png', 719 * 3),
         new BackgroundObject('img/5_background/layers/1_first_layer/2.png', 719 * 3)
 
-    ]
+    ],
+    [
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle(),
+        new Bottle()
+
+    ],
+    [
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin()
+
+
+    ],
+    [
+        new SmallChicken(),
+        new SmallChicken(),
+        new SmallChicken(),
+        new SmallChicken()
+    ],
+
+
 );

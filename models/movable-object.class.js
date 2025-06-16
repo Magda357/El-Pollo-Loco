@@ -8,16 +8,53 @@ class MovableObject {
     currentImage = 0;
     speed = 0.15;
     otherDirection = false;
+    speedY = 0;
+    acceleration = 2.5;
 
+    applyGravity() {
+        setInterval(() => {
+            if (this.isAboveGround() || this.speedY > 0) {
+                this.y -= this.speedY;
+                this.speedY -= this.acceleration;
+            }
+
+        }, 1000 / 25); //25 mal pro Sekunde
+
+    }
+
+    isAboveGround() {
+        return this.y < 180;
+    }
     //loadImage('img/test.png');
     loadImage(path) {
         this.img = new Image(); //this.img = document.getElementById('image') <img id= "image">
         this.img.src = path;
     }
+
+    draw(ctx) {
+
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
+    }
+
+    drawFrame(ctx) {
+
+        if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
+
+            ctx.beginPath();
+            ctx.lineWidth = '5';
+            ctx.strokeStyle = 'blue';
+            ctx.rect(this.x, this.y, this.width, this.height);
+            ctx.stroke();
+        }
+    }
     /* 
     @param {Array} arr - ['img/image1.png' , 'img/image2.png',...]
-    
+
     */
+
+
+
+
     loadImages(arr) {
         arr.forEach((path) => {
 
@@ -28,16 +65,27 @@ class MovableObject {
         });
     }
 
+    playAnimation(images) {
+        let i = this.currentImage % images.length;
+        //let i = 7 % 6; => 1 Rest 1
+        //i= 0,1,2,3,4,5,0,1,2,3,4,5,0,1,2,3,4,5....
+        let path = images[i];
+        this.img = this.imageCache[path];
+        this.currentImage++;
+    }
+
 
     moveRight() {
-        console.log('Moving right');
+        this.x += this.speed;
 
     }
 
     moveLeft() {
-        setInterval(() => {
-            this.x -= 0.15;
 
-        }, 1000 / 60);
+        this.x -= this.speed;
+
+    }
+    jump() {
+        this.speedY = 30;
     }
 }
