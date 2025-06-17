@@ -1,15 +1,10 @@
-class MovableObject {
-    x = 120;
-    y = 280;
-    img;
-    height = 150;
-    width = 100;
-    imageCache = {};
-    currentImage = 0;
+class MovableObject extends DrawableObject {
     speed = 0.15;
     otherDirection = false;
     speedY = 0;
     acceleration = 2.5;
+    energy = 100;
+    lastHit = 0;
 
     applyGravity() {
         setInterval(() => {
@@ -25,44 +20,35 @@ class MovableObject {
     isAboveGround() {
         return this.y < 180;
     }
-    //loadImage('img/test.png');
-    loadImage(path) {
-        this.img = new Image(); //this.img = document.getElementById('image') <img id= "image">
-        this.img.src = path;
+
+
+
+
+    //character.isColliding(chicken);
+    isColliding(mo) {
+        return this.x + this.width > mo.x &&
+            this.y + this.height > mo.y &&
+            this.x < mo.x &&
+            this.y < mo.y + mo.height;
     }
 
-    draw(ctx) {
-
-        ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
-    }
-
-    drawFrame(ctx) {
-
-        if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
-
-            ctx.beginPath();
-            ctx.lineWidth = '5';
-            ctx.strokeStyle = 'blue';
-            ctx.rect(this.x, this.y, this.width, this.height);
-            ctx.stroke();
+    hit() {
+        this.energy -= 5;
+        if (this.energy < 0) {
+            this.energy = 0;
+        } else {
+            this.lastHit = new Date().getTime(); //speichern in zahlenform
         }
+
     }
-    /* 
-    @param {Array} arr - ['img/image1.png' , 'img/image2.png',...]
+    isHurt() {
+        let timepassed = new Date().getTime() - this.lastHit;//difference in millisekunden
+        timepassed = timepassed / 1000; //difference in sekunden
+        return timepassed < 1;
+    }
 
-    */
-
-
-
-
-    loadImages(arr) {
-        arr.forEach((path) => {
-
-
-            let img = new Image();
-            img.src = path;
-            this.imageCache[path] = img;
-        });
+    isDead() {
+        return this.energy == 0;
     }
 
     playAnimation(images) {
@@ -89,3 +75,7 @@ class MovableObject {
         this.speedY = 30;
     }
 }
+
+
+
+
