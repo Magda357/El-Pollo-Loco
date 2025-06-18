@@ -20,28 +20,52 @@
     <script src="models/world.class.js"></script>
     <script src="models/endboss.class.js"> </script>
     <script src="models/bottles.class.js"></script>
+    <script src="models/bottles1.class.js"></script>
     <script src="models/coins.class.js"></script>
     <script src="models/small_chicken.class.js"></script>
     <script src="models/background-object.class.js"></script>
-
-    <script src="models/level.class.js"> </script>
+    <script src="models/throwable-object.class.js"></script>
+    <script src="models/level.class.js"></script>
     <script src="levels/level1.js"></script>
     <script src="models/keyboard.class.js"></script>
-    <script src="js/game.js"> </script>
+    <script src="js/game.js"></script>
 </head>
 
-<body onload="startGame()">
+<body>
 
     <h1>El Pollo Loco</h1>
-    <!--  
-     <div id="start-screen " class="start-screen">
-        <img src="img\9_intro_outro_screens\start\startscreen_1.png" alt="Start game image">
+
+    <div id="start-screen" class="start-screen">
+        <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
         <button onclick="startGame()">Neues Spiel</button>
     </div>
--->
 
+    <canvas id="canvas" width="720" height="480" style="display: none;">
+    </canvas>
 
-    <canvas id="canvas" width="720" height="480"> </canvas>
+    <div class="instruction-box">
+        <p class="instruction">
+            <span class="tastatur">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M15 6L9 12L15 18" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+            </span> Left — Move Left
+        </p>
+        <p class="instruction">
+            <span class="tastatur">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M9 6L15 12L9 18" stroke="white" stroke-width="2" stroke-linecap="round"
+                        stroke-linejoin="round" />
+                </svg>
+
+            </span> Right — Move Right
+        </p>
+        <p class="instruction"> <span class="tastatur">Space </span> Jump </p>
+        <p class="instruction"> <span class="tastatur"> D </span> Throw bottle</p>
+        </p>
+
+    </div>
 </body>
 
 </html>

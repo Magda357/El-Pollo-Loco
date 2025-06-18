@@ -1,17 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Wendy+One&display=swap');
 
 body {
+    margin: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-
-}
-
-body {
-    margin: 0;
     padding: 0;
     font-family: 'Wendy One', sans-serif;
-    background-image: url('/img/5_background/5381.jpg');
+    background-image: url('img/5_background/2dcf96b8-6175-48f9-8576-f8ec72a5ef5e.png');
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
@@ -21,9 +17,104 @@ body {
 
 canvas {
     background-color: black;
-
+    cursor: default;
 }
 
+
+canvas:hover {
+    cursor: pointer;
+    display: block;
+}
+
+
+
+.start-screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.start-screen img {
+    width: 1200px;
+    height: auto;
+    max-width: 90%;
+}
+
+.start-screen button {
+    font-family: 'Wendy One', sans-serif;
+    font-size: 1.5rem;
+    padding: 0.5em 1.5em;
+    border: none;
+    background-color: #ff9900;
+    color: white;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+
+
+.start-screen button:hover {
+    background-color: #cc7a00;
+}
+
+.instruction-box {
+    margin-top: 20px;
+    background-color: rgba(66, 66, 66, 0.6);
+    padding: 15px 25px;
+    border-radius: 12px;
+    width: 400px;
+    color: #fff;
+    font-family: 'Wendy One', sans-serif;
+    user-select: none;
+    box-shadow: 2px 4px 6px #3d3b38;
+}
+
+
+
+p {
+    font-size: 26px;
+}
+
+.instruction {
+    font-size: 1.3rem;
+    margin: 10px 0;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.tastatur {
+    background: linear-gradient(145deg, #cc7a00, #875203);
+    border: 2px solid #ffb84d;
+    border-radius: 8px;
+    padding: 0.3em 0.7em;
+    font-weight: bold;
+    font-family: monospace, monospace;
+    box-shadow: 0 0 8px #ffb84d;
+    min-width: 50px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+
+@keyframes glow {
+
+    0%,
+    100% {
+        box-shadow: 0 0 8px #ffb84d;
+        background: linear-gradient(145deg, #cc7a00, #ff9900);
+    }
+
+    50% {
+        box-shadow: 0 0 16px #ffd873;
+        background: linear-gradient(145deg, #ffb84d, #ffb84d);
+    }
+}
 
 h1 {
     font-family: 'Rock Salt', cursive, 'Georgia', serif;
@@ -37,11 +128,30 @@ h1 {
     letter-spacing: 0.1em;
     text-shadow: 1px 1px 0 #00000033;
     animation: shine 3s linear infinite, swing 2.5s ease-in-out infinite;
-    display: inline-block;
     transform-origin: top center;
 }
 
-/* Анимация градиента */
+/*Smartphones*/
+@media only screen and (max-height: 480px) {
+
+    canvas {
+        height: 100vh;
+    }
+
+
+    h1,
+    .instruction-box {
+        opacity: 0;
+        pointer-events: none;
+        height: 0;
+        overflow: hidden;
+        transition: opacity 0.4s ease;
+    }
+
+
+}
+
+
 @keyframes shine {
     0% {
         background-position: 0% 0%;
@@ -52,7 +162,7 @@ h1 {
     }
 }
 
-/* Анимация покачивания */
+
 @keyframes swing {
     0% {
         transform: rotate(0deg);
@@ -77,4 +187,14 @@ h1 {
     100% {
         transform: rotate(0deg);
     }
+}
+
+
+
+/* Smartphones----*/
+@media only screen and (max-width: 720px) {
+    canvas {
+        width: 100%;
+    }
+
 }

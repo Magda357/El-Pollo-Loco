@@ -4,10 +4,14 @@ let keyboard = new Keyboard();
 
 
 function startGame() {
+    const startScreen = document.getElementById('start-screen');
     canvas = document.getElementById('canvas');
-    world = new World(canvas, keyboard);
 
-    console.log('My Character is', world.character);
+    //start screen hidden und canvas zeigen
+    startScreen.style.display = 'none';
+    canvas.style.display = 'block';
+
+    world = new World(canvas, keyboard);
 
 }
 
@@ -28,8 +32,8 @@ window.addEventListener("keydown", (e) => {
         case "Space":
             keyboard.SPACE = true;
             break;
-        case "Throw":
-            keyboard.THROW = true;
+        case "KeyD":
+            keyboard.D = true;
             break;
     }
 
@@ -53,10 +57,9 @@ window.addEventListener("keyup", (e) => {
         case "Space":
             keyboard.SPACE = false;
             break;
-        case "Throw":
-            keyboard.THROW = false;
+        case "KeyD":
+            keyboard.D = false;
             break;
     }
-
-    console.log(e.code);
 });
+

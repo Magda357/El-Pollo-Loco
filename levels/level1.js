@@ -56,19 +56,34 @@ const level1 = new Level(
     ],
     [
         new Bottle(),
+        new Bottle1(),
         new Bottle(),
+        new Bottle1(),
         new Bottle(),
+        new Bottle1(),
         new Bottle(),
+        new Bottle1(),
         new Bottle(),
-        new Bottle(),
-        new Bottle()
+        new Bottle1()
 
     ],
     [
         new Coin(),
         new Coin(),
         new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
+        new Coin(),
         new Coin()
+
+
+
+
+
+
 
 
     ],

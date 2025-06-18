@@ -9,10 +9,11 @@ class World {
     ctx; //context
     keyboard;
     camera_x = 0;
-    statusBar = new StatusBar();   ////////////////////////////////
+    statusBar = new StatusBar();
     statusBarCoin = new StatusBarCoin();
     statusBarBottle = new StatusBarBottle();
     statusBarEndboss = new StatusBarEndboss();
+    throwableObject = [];
 
     constructor(canvas, keyboard) {
         this.ctx = canvas.getContext('2d');
@@ -20,9 +21,16 @@ class World {
         this.keyboard = keyboard;
         this.draw();
         this.setWorld();
-        this.checkCollisions();
+        this.run();
 
 
+    }
+
+    fullScreenIcon = {
+        x: 600,
+        y: 10,
+        width: 40,
+        height: 40,
     }
 
     setWorld() {
@@ -30,16 +38,31 @@ class World {
     }
 
 
-    checkCollisions() {
+    run() {
+        //check collisions
         setInterval(() => {
-            this.level.enemies.forEach((enemy) => {
-                if (this.character.isColliding(enemy)) {
-                    this.character.hit();
-                    this.statusBar.setPercentage(this.character.energy);////////////////
-                }
-            })
+            this.checkCollisions();
+            this.checkThrowObjects();
+
 
         }, 200);
+    }
+
+    checkThrowObjects() {
+        if (this.keyboard.D) {
+            let bottle = new ThrowableObject(this.character.x + 100, this.character.y + 100);
+            this.throwableObject.push(bottle);
+        }
+    }
+
+    checkCollisions() {
+
+        this.level.enemies.forEach((enemy) => {
+            if (this.character.isColliding(enemy)) {
+                this.character.hit();
+                this.statusBar.setPercentage(this.character.energy);
+            }
+        });
     }
 
     draw() {
@@ -54,10 +77,11 @@ class World {
 
         this.ctx.translate(-this.camera_x, 0);
         //---space for fixed objects----
-        this.addToMap(this.statusBar);///////////////
-        this.addToMap(this.statusBarCoin);///////////////
+        this.addToMap(this.statusBar);
+        this.addToMap(this.statusBarCoin);
         this.addToMap(this.statusBarBottle);
         this.addToMap(this.statusBarEndboss);
+        this.addObjectsToMap(this.throwableObject);
 
         this.ctx.translate(this.camera_x, 0);
 
