@@ -1,26 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" translate="no">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./style.css">
-    <link rel="icon" type="image/png" href="img/favicon/elpolloloco.png">
+    <link rel="icon" type="image/png" href="img/favicon/mariachi.png">
     <title>El Pollo Loco</title>
 
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
     <script src="models/chicken.class.js"></script>
-    <script src="models/cloud.class.js"></script>
     <script src="models/status-bar.class.js"></script>
     <script src="models/status-bar-coin.class.js"></script>
     <script src="models/status-bar-bottle.class.js"></script>
     <script src="models/status-bar-endboss.class.js"></script>
+    <script src="models/cloud.class.js"></script>
     <script src="models/world.class.js"></script>
     <script src="models/endboss.class.js"> </script>
     <script src="models/bottles.class.js"></script>
-    <script src="models/bottles1.class.js"></script>
     <script src="models/coins.class.js"></script>
     <script src="models/small_chicken.class.js"></script>
     <script src="models/background-object.class.js"></script>
@@ -34,15 +33,31 @@
 <body>
 
     <h1>El Pollo Loco</h1>
-
+    <div id="max-status-effect">🎉 Bottles and Coins Collected!🎉</div>
     <div id="start-screen" class="start-screen">
+
         <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
-        <button onclick="startGame()">Neues Spiel</button>
+        <button id="start-screen" onclick="startGame()">START GAME</button>
     </div>
 
-    <canvas id="canvas" width="720" height="480" style="display: none;">
-    </canvas>
+    <div id="game-over-screen" style="display: none;">
+        <img src="img/You won, you lost/You lost.png" width="720px" height="480px" alt="Game over image">
+        <button onclick="restartGame()">Neu starten </button>
+    </div>
+    <div id="gewonnen-screen" style="display: none;">
+        <img src="img/You won, you lost/You Win A.png" alt="Game over image">
+        <button onclick="restartGame()">Neu starten </button>
+    </div>
 
+    <div id="fullscreen">
+        <canvas id="canvas" width="720" height="480" style="display: none;">
+
+        </canvas>
+
+
+    </div>
+    <div id="control-panel">
+    </div>
     <div class="instruction-box">
         <p class="instruction">
             <span class="tastatur">
@@ -66,6 +81,20 @@
         </p>
 
     </div>
+
+    <div id="rotate">
+        <p> Please rotate your device! </p>
+    </div>
+
+
+    <div class="touch-buttons">
+        <button id="btn-left" class="touch-btn">⬅️</button>
+        <button id="btn-right" class="touch-btn">➡️</button>
+        <button id="btn-jump" class="touch-btn jump">⬆️</button>
+        <button id="btn-throw" class="touch-btn throw">🧪</button>
+    </div>
+
+
 </body>
 
 </html>

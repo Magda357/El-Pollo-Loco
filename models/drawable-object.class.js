@@ -10,11 +10,9 @@ class DrawableObject {
 
     //loadImage('img/test.png');
     loadImage(path) {
-        this.img = new Image(); //this.img = document.getElementById('image') <img id= "image">
+        this.img = new Image();
         this.img.src = path;
     }
-
-
     draw(ctx) {
 
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height);
@@ -23,7 +21,8 @@ class DrawableObject {
 
     drawFrame(ctx) {
 
-        if (this instanceof Character || this instanceof Chicken || this instanceof SmallChicken || this instanceof Endboss) {
+        if (this instanceof Character || this instanceof Chicken ||
+            this instanceof SmallChicken || this instanceof Endboss) {
 
             ctx.beginPath();
             ctx.lineWidth = '5';
@@ -32,6 +31,26 @@ class DrawableObject {
             ctx.stroke();
         }
     }
+
+
+    drawOffsetFrame(ctx) {
+        if (this.offset) {
+            ctx.beginPath();
+            ctx.lineWidth = '2';
+            ctx.strokeStyle = 'red';
+
+
+            const x = this.x + this.offset.left;
+            const y = this.y + this.offset.top;
+            const width = this.width - this.offset.left - this.offset.right;
+            const height = this.height - this.offset.top - this.offset.bottom;
+
+            ctx.rect(x, y, width, height);
+            ctx.stroke();
+        }
+    }
+
+
 
     /* 
     @param {Array} arr - ['img/image1.png' , 'img/image2.png',...]
