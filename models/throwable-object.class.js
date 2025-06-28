@@ -102,7 +102,7 @@ class ThrowableObject extends MovableObject {
 
 
     playThrowingSound() {
-        sounds.throwing_music.volume = 0.2;
+        sounds.throwing_music.volume = 0.8;
         sounds.throwing_music.currentTime = 0;
         sounds.throwing_music.play();
     }

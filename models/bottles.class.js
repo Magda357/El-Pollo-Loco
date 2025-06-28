@@ -30,7 +30,7 @@ class Bottle extends MovableObject {
     }
 
     playsound() {
-        sounds.bottle_collection.volume = 0.2;
+        sounds.bottle_collection.volume = 0.9;
         sounds.bottle_collection.currentTime = 0;
         sounds.bottle_collection.play();
     }

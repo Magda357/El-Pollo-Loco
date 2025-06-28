@@ -34,6 +34,8 @@ class Chicken extends MovableObject {
         setInterval(() => {
             if (this.energy > 0) {
                 this.moveLeft();
+                this.playSound();
+
             }
         }, 1000 / 60);
 
@@ -56,10 +58,23 @@ class Chicken extends MovableObject {
     kill() {
         console.log('enemy is killed');
         this.energy = 0;
-        this.isDying = true;
+        this.dead = true;
         this.speed = 0;
+        this.die();
         this.loadImage('img/3_enemies_chicken/chicken_normal/2_dead/dead.png');
     }
+
+    die() {
+        this.isDead = true;
+        this.speed = 0;
+        sounds.chicken_music.pause();
+        sounds.chicken_music.currentTime = 0;
+    }
+    playSound() {
+        sounds.chicken_music.volume = 0.1;
+        sounds.chicken_music.play();
+    }
+
 
 
 

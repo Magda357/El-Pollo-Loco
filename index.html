@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link rel="icon" type="image/png" href="img/favicon/mariachi.png">
     <title>El Pollo Loco</title>
@@ -37,7 +37,7 @@
     <div id="start-screen" class="start-screen">
 
         <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
-        <button id="start-screen" onclick="startGame()">START GAME</button>
+        <button id="start-button" onclick="startGame()">START GAME</button>
     </div>
 
     <div id="game-over-screen" style="display: none;">
@@ -48,14 +48,18 @@
         <img src="img/You won, you lost/You Win A.png" alt="Game over image">
         <button onclick="restartGame()">Neu starten </button>
     </div>
-
+    <div id="mute-div">
+        <button id="mute-button" class="mute-button">🔊</button>
+    </div>
     <div id="fullscreen">
+
         <canvas id="canvas" width="720" height="480" style="display: none;">
 
         </canvas>
 
-
     </div>
+
+
     <div id="control-panel">
     </div>
     <div class="instruction-box">
@@ -86,14 +90,12 @@
         <p> Please rotate your device! </p>
     </div>
 
-
     <div class="touch-buttons">
         <button id="btn-left" class="touch-btn">⬅️</button>
         <button id="btn-right" class="touch-btn">➡️</button>
         <button id="btn-jump" class="touch-btn jump">⬆️</button>
         <button id="btn-throw" class="touch-btn throw">🧪</button>
     </div>
-
 
 </body>
 

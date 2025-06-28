@@ -33,6 +33,7 @@ class SmallChicken extends MovableObject {
         setInterval(() => {
             if (this.energy > 0) {
                 this.moveLeft();
+                this.playSound();
             }
         }, 1000 / 60);
 
@@ -47,10 +48,23 @@ class SmallChicken extends MovableObject {
 
 
     kill() {
+        console.log('small enemy is killed');
         this.energy = 0;
-        this.isDying = true;
+        this.dead = true;
+        this.die();
         this.speed = 0;
         this.loadImage('img/3_enemies_chicken/chicken_small/2_dead/dead.png');
+    }
+
+    die() {
+        this.isDead = true;
+        this.speed = 0;
+        sounds.chicken_music.pause();
+        sounds.chicken_music.currentTime = 0;
+    }
+    playSound() {
+        sounds.chicken_music.volume = 0.1;
+        sounds.chicken_music.play();
     }
 
 }

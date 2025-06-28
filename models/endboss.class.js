@@ -1,5 +1,4 @@
 class Endboss extends MovableObject {
-
     IMAGES_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
         'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -42,7 +41,7 @@ class Endboss extends MovableObject {
     ];
 
     constructor() {
-        super().loadImage('img/4_enemie_boss_chicken/2_alert/G5.png');
+        super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
         this.loadImages(this.IMAGES_WALKING);
         this.loadImages(this.IMAGES_ATTACK);
@@ -53,23 +52,17 @@ class Endboss extends MovableObject {
         this.y = 55;
         this.width = 250;
         this.height = 400;
-        this.speed = 14;
+        this.speed = 20;
         this.health = 7;
 
         this.currentState = 'idle';
         this.isDead = false;
         this.isDeadAnimationPlayed = false;
         this.isHurt = false;
-
         this.alertPlayed = false;
         this.attackStarted = false;
 
-        this.offset = {
-            top: 22,
-            right: 22,
-            bottom: 22,
-            left: 22
-        };
+        this.offset = { top: 22, right: 22, bottom: 22, left: 22 };
 
         this.animate();
     }
@@ -78,80 +71,87 @@ class Endboss extends MovableObject {
         this.animationInterval = setInterval(() => {
             if (this.isDead) {
                 this.playDeathAnimationOnce();
+                this.die();
                 return;
             }
 
+            if (this.isHurt) {
+                this.currentState = 'hurt';
+                this.playAnimation(this.IMAGES_HURT);
 
-            if (this.isCharacterNear(600) && this.currentState !== 'hurt' && this.currentState !== 'attack' && this.currentState !== 'chase') {
                 setTimeout(() => {
-                    this.currentState = 'alert';
-                    this.alertPlayed = false;
-                    this.attackStarted = false;
-                }, 1000);
+                    this.isHurt = false;
+                    if (!this.isDead) {
+                        this.currentState = 'attack';
+                    }
+                }, 500);
+                return;
             }
 
-            switch (this.currentState) {
-                case 'alert':
-                    this.playAnimation(this.IMAGES_ALERT);
+            const near400 = this.isCharacterNear(400);
+            const near900 = this.isCharacterNear(900);
 
-                    if (!this.alertPlayed) {
-                        this.alertPlayed = true;
-
+            if (this.currentState === 'idle') {
+                if (near400) {
+                    this.currentState = 'alert';
+                    this.alertPlayed = false;
+                } else {
+                    this.playAnimation(this.IMAGES_WALKING);
+                }
+            } else if (this.currentState === 'alert') {
+                this.playAnimation(this.IMAGES_ALERT);
+                if (!this.alertPlayed) {
+                    this.alertPlayed = true;
+                    setTimeout(() => {
                         this.currentState = 'attack';
-
-                    }
-                    break;
-
-                case 'attack':
-                    this.playAnimation(this.IMAGES_ATTACK);
-
-                    if (!this.attackStarted) {
-                        this.attackStarted = true;
-                        setTimeout(() => {
-                            this.currentState = 'chase';
-                            this.attackStarted = false;
-                        }, 1500);
-                    }
-                    break;
-
-                case 'chase':
+                    }, 700);
+                }
+            } else if (this.currentState === 'attack') {
+                this.playAnimation(this.IMAGES_ATTACK);
+                if (!this.attackStarted) {
+                    this.attackStarted = true;
+                    this.playSound();
+                    setTimeout(() => {
+                        this.currentState = 'chase';
+                        this.attackStarted = false;
+                    }, 1000);
+                }
+            } else if (this.currentState === 'chase') {
+                if (near900) {
                     this.playAnimation(this.IMAGES_WALKING);
                     this.moveTowardCharacter();
-
-                    // Если персонаж убегает дальше 400 пикселей — возвращается в idle
-                    if (!this.isCharacterNear(400)) {
-                        this.currentState = 'idle';
-                    }
-                    break;
-
-                case 'hurt':
-                    this.playAnimation(this.IMAGES_HURT);
-                    setTimeout(() => {
-                        if (!this.isDead) {
-                            this.currentState = 'attack';
-                            this.isHurt = false;
-                        }
-                    }, 1000 / 60);
-                    break;
-
-                default: // idle
-                    this.playAnimation(this.IMAGES_WALKING);
-                    this.moveLeft();
-                    break;
+                } else {
+                    this.currentState = 'idle';
+                }
             }
         }, 150);
     }
 
-    moveTowardCharacter() {
-        if (!this.world || !this.world.character) return;
+    die() {
+        this.isDead = true;
+        this.speed = 0;
+        sounds.endboss_music.pause();
+        sounds.endboss_music.currentTime = 0;
+    }
+    playSound() {
+        sounds.endboss_music.volume = 0.8;
+        sounds.endboss_music.play();
+    }
 
-        const char = this.world.character;
-        if (this.x > char.x) {
-            this.moveLeft();
-            this.otherDirection = true;
-        } else {
-            this.moveRight();
-            this.otherDirection = false;
+    moveTowardCharacter() {
+        if (!world || !world.character) return;
+
+        const char = world.character;
+        const dx = this.x - char.x;
+
+        if (Math.abs(dx) > 20) {
+            if (dx > 0) {
+                this.moveLeft();
+                this.otherDirection = false;
+            } else {
+                this.moveRight();
+                this.otherDirection = true;
+            }
         }
     }
 
@@ -160,7 +160,6 @@ class Endboss extends MovableObject {
 
         this.health--;
         this.isHurt = true;
-        this.currentState = 'hurt';
 
         if (this.health <= 0) {
             this.health = 0;
@@ -171,9 +170,8 @@ class Endboss extends MovableObject {
     }
 
     isCharacterNear(distance) {
-        if (!this.world || !this.world.character) return false;
-
-        const dx = Math.abs(this.x - this.world.character.x);
+        if (!world || !world.character) return false;
+        const dx = Math.abs(this.x - world.character.x);
         return dx < distance;
     }
 
@@ -184,19 +182,10 @@ class Endboss extends MovableObject {
         this.isDeadAnimationPlayed = true;
 
 
-
         setTimeout(() => {
             this.y = -1000;
             this.speed = 0;
             win();
-        }, 2000);
-    }
-
-    showGameWonScreen() {
-        if (this.world && typeof this.world.showWonScreen === 'function') {
-            setTimeout(() => {
-                this.world.showWonScreen();
-            }, 500);
-        }
+        }, 1000);
     }
 }

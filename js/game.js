@@ -2,24 +2,37 @@ let canvas;
 let world;
 let keyboard = new Keyboard();
 let sounds = {
-
+    dead_music: new Audio('audio/dead.mp3'),
     coin_collection: new Audio('audio/coin.mp3'),
-    bottle_collection: new Audio('audio/collect_bottle.mp3'),
+    bottle_collection: new Audio('audio/bottle-opening-wine-cork-pop-352701.mp3'),
     game_music: new Audio('audio/theme-song.mp3'),
     hurt_music: new Audio('audio/hurt.mp3'),
     jumping_music: new Audio('audio/jumping.mp3'),
     running_music: new Audio('audio/running.mp3'),
     throwing_music: new Audio('audio/audio_throw.mp3'),
-    dead_music: new Audio('audio/dead.mp3'),
     sleep_music: new Audio('audio/sleeping.mp3'),
-    victory_music: new Audio('audio/goodresult-82807.mp3')
+    victory_music: new Audio('audio/goodresult-82807.mp3'),
+    endboss_music: new Audio('audio/chicken-cluking-type-3-293320.mp3'),
+    chicken_music: new Audio('audio/short-chick-sound-171389.mp3')
 };
 
-let gameIsPaused = false;
-let gameHasStarted = false;
+let gameOverTriggered = false;
+let isMuted = false;
+let muteButton;
+
+window.addEventListener('load', () => {
+    muteButton = document.getElementById('mute-button');
+    muteButton.addEventListener('click', toggleMute);
+});
+
+
+function toggleMute() {
+    isMuted = !isMuted;
+    Object.values(sounds).forEach(sound => sound.muted = isMuted);
+    muteButton.textContent = isMuted ? '🔇' : '🔊';
+}
 
 function startGame() {
-
     const startScreen = document.getElementById('start-screen');
     canvas = document.getElementById('canvas');
 
@@ -28,24 +41,40 @@ function startGame() {
 
     startScreen.style.display = 'none';
     canvas.style.display = 'block';
+
+    muteButton.style.display = 'inline-block';
+
     world = new World(canvas, keyboard);
+    gameMusic();
+
+
+}
+
+function gameMusic() {
+
     sounds.game_music.volume = 0.2;
     sounds.game_music.loop = true;
     sounds.game_music.play();
 }
 
-
-
 function gameOver() {
+    if (gameOverTriggered) return;
+    gameOverTriggered = true;
+    muteButton.style.display = 'none';
+
+
     sounds.game_music.pause();
     const gameOverScreen = document.getElementById("game-over-screen");
     canvas.style.display = 'none';
     gameOverScreen.style.display = 'block';
-
 }
+
+
 function win() {
 
     const gewonnenScreen = document.getElementById("gewonnen-screen");
+    muteButton.style.display = 'none';
+
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
     setTimeout(() => {
@@ -59,9 +88,27 @@ function win() {
 }
 
 function restartGame() {
+    gameOverTriggered = false;
+    muteButton.style.display = 'none';
+
+
+    if (world) {
+        world.clearWorld();
+        world = null;
+    }
+
+    Object.values(sounds).forEach(sound => {
+        sound.pause();
+        sound.currentTime = 0;
+    });
+
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('gewonnen-screen').style.display = 'none';
+
+    const canvas = document.getElementById('canvas');
+    canvas.style.display = 'block';
+
     startGame();
 }
 
@@ -69,7 +116,7 @@ function restartGame() {
 function checkOrientation() {
 
     const rotate = document.getElementById('rotate');
-    const startButton = document.getElementById('start-screen');
+    const startButton = document.getElementById('start-button');
 
     if (rotate && startButton) {
         if (window.innerHeight > window.innerWidth) {
