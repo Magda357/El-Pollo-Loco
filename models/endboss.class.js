@@ -1,4 +1,9 @@
+/**
+ * Represents the Endboss enemy with multiple animation states and behaviors.
+ * Extends MovableObject for movement capabilities.
+ */
 class Endboss extends MovableObject {
+    /** @type {string[]} Image paths for alert animation */
     IMAGES_ALERT = [
         'img/4_enemie_boss_chicken/2_alert/G5.png',
         'img/4_enemie_boss_chicken/2_alert/G6.png',
@@ -10,6 +15,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/2_alert/G12.png'
     ];
 
+    /** @type {string[]} Image paths for walking animation */
     IMAGES_WALKING = [
         'img/4_enemie_boss_chicken/1_walk/G1.png',
         'img/4_enemie_boss_chicken/1_walk/G2.png',
@@ -17,6 +23,7 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/1_walk/G4.png'
     ];
 
+    /** @type {string[]} Image paths for attack animation */
     IMAGES_ATTACK = [
         'img/4_enemie_boss_chicken/3_attack/G13.png',
         'img/4_enemie_boss_chicken/3_attack/G14.png',
@@ -28,18 +35,23 @@ class Endboss extends MovableObject {
         'img/4_enemie_boss_chicken/3_attack/G20.png'
     ];
 
+    /** @type {string[]} Image paths for hurt animation */
     IMAGES_HURT = [
         'img/4_enemie_boss_chicken/4_hurt/G21.png',
         'img/4_enemie_boss_chicken/4_hurt/G22.png',
         'img/4_enemie_boss_chicken/4_hurt/G23.png'
     ];
 
+    /** @type {string[]} Image paths for dead animation */
     IMAGES_DEAD = [
         'img/4_enemie_boss_chicken/5_dead/G24.png',
         'img/4_enemie_boss_chicken/5_dead/G25.png',
         'img/4_enemie_boss_chicken/5_dead/G26.png'
     ];
 
+    /**
+     * Creates an Endboss instance with initial settings, loads images, and starts animation.
+     */
     constructor() {
         super().loadImage(this.IMAGES_ALERT[0]);
         this.loadImages(this.IMAGES_ALERT);
@@ -55,7 +67,7 @@ class Endboss extends MovableObject {
         this.speed = 20;
         this.health = 7;
 
-        this.currentState = 'idle';
+        this.currentState = 'idle'; // Current animation/state ('idle', 'alert', 'attack', 'chase', 'hurt', 'dead')
         this.isDead = false;
         this.isDeadAnimationPlayed = false;
         this.isHurt = false;
@@ -67,77 +79,174 @@ class Endboss extends MovableObject {
         this.animate();
     }
 
+    /**
+     * Starts the main animation loop controlling behavior and animations based on state.
+     */
     animate() {
         this.animationInterval = setInterval(() => {
-            if (this.isDead) {
-                this.playDeathAnimationOnce();
-                this.die();
-                return;
-            }
-
-            if (this.isHurt) {
-                this.currentState = 'hurt';
-                this.playAnimation(this.IMAGES_HURT);
-
-                setTimeout(() => {
-                    this.isHurt = false;
-                    if (!this.isDead) {
-                        this.currentState = 'attack';
-                    }
-                }, 500);
-                return;
-            }
+            if (this.processDeath()) return;
+            if (this.processHurt()) return;
 
             const near400 = this.isCharacterNear(400);
             const near900 = this.isCharacterNear(900);
 
-            if (this.currentState === 'idle') {
-                if (near400) {
-                    this.currentState = 'alert';
-                    this.alertPlayed = false;
-                } else {
-                    this.playAnimation(this.IMAGES_WALKING);
-                }
-            } else if (this.currentState === 'alert') {
-                this.playAnimation(this.IMAGES_ALERT);
-                if (!this.alertPlayed) {
-                    this.alertPlayed = true;
-                    setTimeout(() => {
-                        this.currentState = 'attack';
-                    }, 700);
-                }
-            } else if (this.currentState === 'attack') {
-                this.playAnimation(this.IMAGES_ATTACK);
-                if (!this.attackStarted) {
-                    this.attackStarted = true;
-                    this.playSound();
-                    setTimeout(() => {
-                        this.currentState = 'chase';
-                        this.attackStarted = false;
-                    }, 1000);
-                }
-            } else if (this.currentState === 'chase') {
-                if (near900) {
-                    this.playAnimation(this.IMAGES_WALKING);
-                    this.moveTowardCharacter();
-                } else {
-                    this.currentState = 'idle';
-                }
-            }
+            this.handleCurrentState(near400, near900);
         }, 150);
     }
 
+    /**
+     * Checks if the Endboss is dead and triggers death animation and logic.
+     * @returns {boolean} True if death was processed, otherwise false.
+     */
+    processDeath() {
+        if (this.isDead) {
+            this.playDeathAnimationOnce();
+            this.die();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Checks if the Endboss is hurt and plays hurt animation, then resets hurt state after delay.
+     * @returns {boolean} True if hurt was processed, otherwise false.
+     */
+    processHurt() {
+        if (this.isHurt) {
+            this.currentState = 'hurt';
+            this.playAnimation(this.IMAGES_HURT);
+            this.resetHurtAfterDelay();
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * Resets the hurt state after a short delay and switches to attack state if not dead.
+     */
+    resetHurtAfterDelay() {
+        setTimeout(() => {
+            this.isHurt = false;
+            if (!this.isDead) {
+                this.currentState = 'attack';
+            }
+        }, 500);
+    }
+
+    /**
+     * Determines which behavior method to call based on current state.
+     * @param {boolean} near400 - Is the character near within 400 units.
+     * @param {boolean} near900 - Is the character near within 900 units.
+     */
+    handleCurrentState(near400, near900) {
+        switch (this.currentState) {
+            case 'idle':
+                this.handleIdleState(near400);
+                break;
+            case 'alert':
+                this.handleAlertState();
+                break;
+            case 'attack':
+                this.handleAttackState();
+                break;
+            case 'chase':
+                this.handleChaseState(near900);
+                break;
+        }
+    }
+
+    /**
+     * Handles behavior when in idle state.
+     * @param {boolean} near400 - If character is near within 400 units.
+     */
+    handleIdleState(near400) {
+        if (near400) {
+            this.currentState = 'alert';
+            this.alertPlayed = false;
+        } else {
+            this.playAnimation(this.IMAGES_WALKING);
+        }
+    }
+
+    /**
+     * Plays alert animation and triggers transition to attack after delay.
+     */
+    handleAlertState() {
+        this.playAnimation(this.IMAGES_ALERT);
+
+        if (!this.alertPlayed) {
+            this.alertPlayed = true;
+            this.transitionToAttackDelayed();
+        }
+    }
+
+    /**
+     * Changes state to attack after 700 milliseconds.
+     */
+    transitionToAttackDelayed() {
+        setTimeout(() => {
+            this.currentState = 'attack';
+        }, 700);
+    }
+
+    /**
+     * Plays attack animation and sound, then transitions to chase after delay.
+     */
+    handleAttackState() {
+        this.playAnimation(this.IMAGES_ATTACK);
+
+        if (!this.attackStarted) {
+            this.attackStarted = true;
+            this.playSound();
+            this.transitionToChaseDelayed();
+        }
+    }
+
+    /**
+     * Changes state to chase after 1000 milliseconds.
+     */
+    transitionToChaseDelayed() {
+        setTimeout(() => {
+            this.currentState = 'chase';
+            this.attackStarted = false;
+        }, 1000);
+    }
+
+    /**
+     * Handles chasing behavior by moving toward the character or switching back to idle.
+     * @param {boolean} near900 - If character is near within 900 units.
+     */
+    handleChaseState(near900) {
+        if (near900) {
+            this.playAnimation(this.IMAGES_WALKING);
+            this.moveTowardCharacter();
+        } else {
+            this.currentState = 'idle';
+        }
+    }
+
+    /**
+     * Stops movement, pauses music, and marks Endboss as dead.
+     */
     die() {
         this.isDead = true;
         this.speed = 0;
         sounds.endboss_music.pause();
         sounds.endboss_music.currentTime = 0;
     }
+
+    /**
+     * Plays the Endboss' music/sound effect at a set volume.
+     */
     playSound() {
         sounds.endboss_music.volume = 0.8;
         sounds.endboss_music.play();
     }
 
+    /**
+     * Moves the Endboss toward the character's x position.
+     * Adjusts direction and movement based on relative position.
+     */
     moveTowardCharacter() {
         if (!world || !world.character) return;
 
@@ -155,6 +264,9 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Applies damage to the Endboss, triggers hurt state and checks for death.
+     */
     takeDamage() {
         if (this.isDead) return;
 
@@ -169,23 +281,30 @@ class Endboss extends MovableObject {
         }
     }
 
+    /**
+     * Checks if the character is within a specified horizontal distance.
+     * @param {number} distance - Distance to check proximity.
+     * @returns {boolean} True if character is near, false otherwise.
+     */
     isCharacterNear(distance) {
         if (!world || !world.character) return false;
         const dx = Math.abs(this.x - world.character.x);
         return dx < distance;
     }
 
+    /**
+     * Plays the death animation once and then triggers win condition.
+     */
     playDeathAnimationOnce() {
         if (this.isDeadAnimationPlayed) return;
 
         this.playAnimation(this.IMAGES_DEAD);
         this.isDeadAnimationPlayed = true;
 
-
         setTimeout(() => {
-            this.y = -1000;
+            this.y = -1000; // Hide off screen
             this.speed = 0;
-            win();
+            win(); // Call game win function
         }, 1000);
     }
 }

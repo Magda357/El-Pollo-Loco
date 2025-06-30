@@ -38,6 +38,11 @@
 
         <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
         <button id="start-button" onclick="startGame()">START GAME</button>
+        <button id="showImpressumBtn"
+            style="position: fixed; bottom: 285px; right: 610px; padding: 10px 15px; font-size: 16px; cursor: pointer;">
+            Impressum
+        </button>
+
     </div>
 
     <div id="game-over-screen" style="display: none;">
@@ -57,6 +62,17 @@
 
         </canvas>
 
+    </div>
+
+    <div class="touch-buttons">
+        <div id="group-left">
+            <button id="btn-left" class="touch-btn">⬅️</button>
+            <button id="btn-right" class="touch-btn">➡️</button>
+        </div>
+        <div id="group-right">
+            <button id="btn-jump" class="touch-btn jump">⬆️</button>
+            <button id="btn-throw" class="touch-btn throw">🧪</button>
+        </div>
     </div>
 
 
@@ -90,13 +106,21 @@
         <p> Please rotate your device! </p>
     </div>
 
-    <div class="touch-buttons">
-        <button id="btn-left" class="touch-btn">⬅️</button>
-        <button id="btn-right" class="touch-btn">➡️</button>
-        <button id="btn-jump" class="touch-btn jump">⬆️</button>
-        <button id="btn-throw" class="touch-btn throw">🧪</button>
-    </div>
 
+    <!-- Modal window for Impressum -->
+    <div id="impressumModal">
+        <div class="impressum-content">
+            <h2>Impressum</h2>
+            <p><strong> Verantwörtlicher:</strong> Magda Danielyan</p>
+            <p>32839 Steinheim <br>Deutschland</p>
+            <p><strong>Kontakt:</strong><br>
+                E-Mail: mdanielyan50@gmail.com</p>
+            <div id="pic"><img src="img/favicon/mariachi.png" alt="Mariachi" width="200px" height="200px"></div>
+            <p class="copyright">Alle Rechte vorbehalten © 2025 </p>
+            <button id="closeImpressumBtn">&times;</button>
+        </div>
+
+    </div>
 </body>
 
 </html>
