@@ -3,7 +3,6 @@
 body {
     margin: 0;
     width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -26,12 +25,13 @@ canvas {
     cursor: default;
     max-width: 100%;
     height: auto;
-    margin-top: -50px;
+    margin-top: -18px;
 }
 
 #mute-div {
-    display: flex;
+    display: none;
     margin-left: 700px;
+    z-index: 100 !important;
 }
 
 .mute-button {
@@ -40,9 +40,8 @@ canvas {
     height: 0;
     justify-content: center;
     margin-left: -110px;
-    margin-top: -35px;
+    margin-top: -5px;
     padding: 0;
-    z-index: 9999;
     background-color: rgba(85, 196, 213, 0.08);
     font-size: 30px;
     cursor: pointer;
@@ -54,9 +53,7 @@ canvas {
     transform: scale(1.1);
 }
 
-#mute-button {
-    display: none;
-}
+
 
 #control-panel img {
 
@@ -74,19 +71,25 @@ canvas:hover {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 15px;
+    margin-top: -20px;
+    margin-bottom: 15px;
 }
+
+
 
 .start-screen img,
 #game-over-screen img,
 #gewonnen-screen img {
     width: 720px;
     height: 480px;
-    margin-top: -50px;
 
 }
 
-.start-screen button,
+#canvas {
+    margin-bottom: 20px;
+}
+
+#start_buttons button,
 #game-over-screen button,
 #gewonnen-screen button {
     font-family: 'Wendy One', sans-serif;
@@ -103,16 +106,21 @@ canvas:hover {
 
 }
 
-#gewonnen-screen button,
-#game-over-screen button {
-    display: flex;
-    justify-content: center;
-    margin-left: 250px;
+#game-over-screen button,
+#gewonnen-screen button {
+
+    position: fixed;
+    top: 480px;
+    left: 1180px;
+    height: 50px;
+
 }
 
-.start-screen button:hover,
+
+#start_buttons button:hover,
 #game-over-screen button:hover,
-#gewonnen-screen button:hover {
+#gewonnen-screen button:hover,
+#showImpressumBtn:hover {
     background-color: rgb(173, 80, 26);
     box-shadow: 4px 6px 8px rgb(102, 113, 18);
     transform: scale(1.15);
@@ -120,17 +128,20 @@ canvas:hover {
 }
 
 .instruction-box {
-    margin-top: 20px;
     background-color: rgba(66, 66, 66, 0.6);
-    padding: 5px 35px;
-    border-radius: 12px;
-    width: 450px;
-    color: #fff;
+    display: flex;
     justify-content: center;
+    flex-direction: column;
+    align-items: start;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 0 25px;
+    border-radius: 12px;
+    color: #fff;
     font-family: 'Wendy One', sans-serif;
-    user-select: none;
     box-shadow: 2px 4px 6px #3d3b38;
-    margin-bottom: 10px;
+    height: 120px;
+    margin-top: 50px;
 }
 
 p {
@@ -171,8 +182,8 @@ p {
 }
 
 .instruction {
-    font-size: 20px;
-    margin: 10px 0;
+    font-size: 18px;
+    margin: 5px 0;
     display: flex;
     align-items: center;
     gap: 10px;
@@ -211,6 +222,7 @@ h1 {
     font-family: 'Rock Salt', cursive, 'Georgia', serif;
     font-size: 50px;
     margin-bottom: 50px;
+    margin-top: 0px;
     text-align: center;
     background: linear-gradient(90deg, #5b9a2b, #d6de37, #ec7a0f);
     background-size: 200% auto;
@@ -261,7 +273,7 @@ h1 {
 }
 
 
-#touch-button {
+#touch-buttons {
     display: flex;
     bottom: 20px;
     left: 50%;
@@ -272,7 +284,7 @@ h1 {
 }
 
 .touch-buttons {
-    display: none;
+    display: none !important;
 
 }
 
@@ -334,6 +346,19 @@ h1 {
     font-family: 'Wendy One', sans-serif;
 }
 
+#showImpressumBtn {
+    display: flex;
+    background-color: #ff9900;
+    border-radius: 10px;
+    border: none;
+    color: white;
+    font-size: 18px;
+    padding: 10px 10px;
+    cursor: pointer;
+    z-index: 100;
+    font-family: 'Wendy One', sans-serif;
+}
+
 
 /* Impressum Modal Styles */
 #impressumModal {
@@ -390,132 +415,13 @@ h1 {
     margin-top: 15px;
 }
 
-
-
-/* =====  (Tablet) ===== */
-@media (max-width: 1024px) {
-    #mute-div {
-        display: none !important;
-    }
-
-    canvas {
-        width: 100%;
-        height: auto;
-    }
-
-    #mute-button {
-        display: block;
-    }
-
-    h1 {
-        font-size: 40px;
-        margin-top: 10px;
-    }
-
-    .touch-buttons {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: -70px;
-    }
-
-    #group-right {
-        margin-left: 240px;
-    }
-
-    #group-left,
-    #group-right {
-        display: flex;
-        gap: 20px;
-    }
-
-    .instruction-box {
-        width: 60%;
-        font-size: 18px;
-        margin-top: 70px;
-        padding: 0 20px;
-    }
-
-    .instruction {
-        font-size: 16px;
-    }
-
-    .start-screen button {
-        margin-top: -100px;
-    }
-}
-
-/* ===== (Mobile) ===== */
-@media (max-width: 750px) {
-
-
-    h1 {
-        font-size: 32px;
-        margin-top: 15px;
-    }
-
-    .instruction-box {
-        display: none;
-    }
-
-    .start-screen img,
-    #game-over-screen img,
-    #gewonnen-screen img {
-        width: 90%;
-        height: auto;
-    }
-
-    .touch-buttons {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-top: -40px;
-    }
-
-    .touch-btn {
-        width: 40px;
-        height: 40px;
-        font-size: 1.5rem;
-    }
-
-
-
-    .start-screen button,
-    #game-over-screen button,
-    #gewonnen-screen button {
-
-        font-size: 1rem;
-        padding: 0.5em 1.5em;
-    }
-}
-
-/* ===== portrait mobile ===== */
-@media (orientation: portrait) and (max-width: 720px) {
-
-
-    .start-screen img,
-    #game-over-screen img,
-    #gewonnen-screen img {
-        width: 60%;
-        height: auto;
-    }
-
-
-
-    h1,
-    .instruction-box {
-        display: none;
-    }
-}
-
-/* ===== kleine notebooks ===== */
-@media (max-width: 1366px) {
-    canvas {
-        width: 100%;
-        height: auto;
-    }
-
-    .instruction-box {
-        font-size: 18px;
-    }
+#start_buttons {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    flex-direction: row;
+    gap: 50px;
+    width: 500px;
+    flex-wrap: wrap;
+    margin-top: 525px;
 }

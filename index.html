@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./responsive.css">
+
     <link rel="icon" type="image/png" href="img/favicon/mariachi.png">
     <title>El Pollo Loco</title>
 
@@ -32,21 +34,21 @@
 
 <body>
 
-    <h1>El Pollo Loco</h1>
+
     <div id="max-status-effect">🎉 Bottles and Coins Collected!🎉</div>
+    <h1>El Pollo Loco</h1>
+
     <div id="start-screen" class="start-screen">
 
         <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
+    </div>
+    <div id="start_buttons">
         <button id="start-button" onclick="startGame()">START GAME</button>
-        <button id="showImpressumBtn"
-            style="position: fixed; bottom: 285px; right: 610px; padding: 10px 15px; font-size: 16px; cursor: pointer;">
-            Impressum
-        </button>
-
+        <button id="showImpressumBtn">Impressum</button>
     </div>
 
     <div id="game-over-screen" style="display: none;">
-        <img src="img/You won, you lost/You lost.png" width="720px" height="480px" alt="Game over image">
+        <img src="img/You won, you lost/You lost.png" width="720" height="480" alt="Game over image">
         <button onclick="restartGame()">Neu starten </button>
     </div>
     <div id="gewonnen-screen" style="display: none;">
@@ -57,12 +59,12 @@
         <button id="mute-button" class="mute-button">🔊</button>
     </div>
     <div id="fullscreen">
-
         <canvas id="canvas" width="720" height="480" style="display: none;">
 
         </canvas>
-
     </div>
+
+
 
     <div class="touch-buttons">
         <div id="group-left">
@@ -75,9 +77,6 @@
         </div>
     </div>
 
-
-    <div id="control-panel">
-    </div>
     <div class="instruction-box">
         <p class="instruction">
             <span class="tastatur">
@@ -111,8 +110,8 @@
     <div id="impressumModal">
         <div class="impressum-content">
             <h2>Impressum</h2>
-            <p><strong> Verantwörtlicher:</strong> Magda Danielyan</p>
-            <p>32839 Steinheim <br>Deutschland</p>
+            <p><strong> Name des Verantwortlichen :</strong> <br> Magda Danielyan</p>
+            <p> <strong>Anschrift:</strong> 32839 Steinheim <br>Deutschland</p>
             <p><strong>Kontakt:</strong><br>
                 E-Mail: mdanielyan50@gmail.com</p>
             <div id="pic"><img src="img/favicon/mariachi.png" alt="Mariachi" width="200px" height="200px"></div>

@@ -1,0 +1,133 @@
+/* =====  (Tablet) ===== */
+@media (max-width: 1024px) {
+
+
+    .instruction-box {
+        display: none;
+    }
+
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    #mute-button {
+        display: block;
+    }
+
+    h1 {
+        font-size: 40px;
+        margin-top: 10px;
+    }
+
+    .touch-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: -170px;
+    }
+
+    #group-right {
+        margin-left: 300px;
+    }
+
+    #group-left,
+    #group-right {
+        display: flex;
+        gap: 20px;
+    }
+
+    .instruction-box {
+        width: 60%;
+        font-size: 18px;
+        margin-top: 70px;
+        padding: 0 20px;
+    }
+
+    .instruction {
+        font-size: 16px;
+    }
+
+
+}
+
+
+
+
+/* ===== (Mobile) ===== */
+@media (max-width: 770px) {
+
+    h1 {
+        display: none;
+    }
+
+    .instruction-box {
+        display: none;
+    }
+
+    .touch-buttons {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: -150px !important;
+    }
+
+    .touch-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    #start_buttons {
+        margin-top: -100px !important;
+    }
+
+
+    .start-screen button,
+    #game-over-screen button,
+    #gewonnen-screen button {
+
+        font-size: 1rem;
+        margin-top: 200px !important;
+    }
+
+    #start-screen button {
+        margin-top: -10px !important;
+    }
+
+    #showImpressumBtn {
+
+        display: none;
+    }
+}
+
+/* ===== portrait mobile ===== */
+@media (orientation: portrait) and (max-width: 720px) {
+
+
+    .start-screen img,
+    #game-over-screen img,
+    #gewonnen-screen img {
+        width: 60%;
+        height: auto;
+    }
+
+
+
+    h1,
+    .instruction-box {
+        display: none;
+    }
+}
+
+/* ===== kleine notebooks ===== */
+@media (max-width: 1366px) {
+    canvas {
+        width: 100%;
+        height: auto;
+    }
+
+    .instruction-box {
+        font-size: 18px;
+    }
+}

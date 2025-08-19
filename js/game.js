@@ -53,48 +53,68 @@ let isMuted = false;
  */
 let muteButton;
 
-/**
- * Registers event listeners when the page is fully loaded.
- */
-window.addEventListener('load', () => {
-    muteButton = document.getElementById('mute-button');
-    muteButton.addEventListener('click', toggleMute);
-});
+
 
 /**
  * Toggles the mute state for all sounds in the game.
  */
+// This function toggles the mute state for all game sounds and updates the mute button text accordingly.
 function toggleMute() {
     isMuted = !isMuted;
     Object.values(sounds).forEach(sound => sound.muted = isMuted);
     muteButton.textContent = isMuted ? '🔇' : '🔊';
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const showImpressumBtn = document.getElementById('showImpressumBtn');
+    const impressumModal = document.getElementById('impressumModal');
+    const closeImpressumBtn = document.getElementById('closeImpressumBtn');
+    muteButton = document.getElementById('mute-button');
+    if (muteButton) {
+        muteButton.addEventListener('click', toggleMute);
+    }
+
+    showImpressumBtn.addEventListener('click', () => {
+        impressumModal.classList.add('show');
+    });
+
+    closeImpressumBtn.addEventListener('click', () => {
+        impressumModal.classList.remove('show');
+    });
+
+    impressumModal.addEventListener('click', (e) => {
+        if (e.target === impressumModal) {
+            impressumModal.classList.remove('show');
+        }
+    });
+});
+
 /**
  * Initializes the game, canvas, level, and world objects.
  */
 function startGame() {
     if (window.innerHeight > window.innerWidth) {
-        alert("Please rotate your device to landscape to start the game.");
         return;
     }
 
-    const startScreen = document.getElementById('start-screen');
-    canvas = document.getElementById('canvas');
+    document.getElementById('mute-div').style.display = 'flex';
+    document.getElementById('start-button').style.display = 'none';
+    document.getElementById('showImpressumBtn').style.display = 'flex';
 
+
+    canvas = document.getElementById('canvas');
     initLevel();
     initMobileControls();
 
-    startScreen.style.display = 'none';
+    document.getElementById('start-screen').style.display = 'none';
     canvas.style.display = 'block';
-    muteButton.style.display = 'block';
+    document.querySelector('.touch-buttons').style.display = 'flex';
 
     world = new World(canvas, keyboard);
     gameMusic();
 }
-
 /**
- * Plays the main background music in a loop.
+  *   Pl ays the main background music in a loop.
  */
 function gameMusic() {
     sounds.game_music.volume = 0.2;
@@ -109,13 +129,17 @@ function gameOver() {
     if (gameOverTriggered) return;
     gameOverTriggered = true;
 
-    muteButton.style.display = 'none';
     sounds.game_music.pause();
 
     const gameOverScreen = document.getElementById("game-over-screen");
     canvas.style.display = 'none';
     gameOverScreen.style.display = 'block';
-
+    document.getElementById('mute-div').style.display = 'none';
+    setTimeout(() => {
+        sounds.victory_music.volume = 0.2;
+        sounds.victory_music.loop = false;
+        sounds.victory_music.play();
+    }, 400);
 }
 
 /**
@@ -124,9 +148,10 @@ function gameOver() {
 function win() {
     const gewonnenScreen = document.getElementById("gewonnen-screen");
 
-    muteButton.style.display = 'none';
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
+    document.getElementById('mute-div').style.display = 'none';
+
     setTimeout(() => {
         sounds.victory_music.volume = 0.2;
         sounds.victory_music.loop = false;
@@ -139,7 +164,6 @@ function win() {
  */
 function restartGame() {
     gameOverTriggered = false;
-    muteButton.style.display = 'none';
 
     if (world) {
         world.clearWorld();
@@ -172,11 +196,11 @@ function checkOrientation() {
 
     if (isPortrait) {
         rotate.style.display = 'flex';
-        startButton.disabled = true;
-        canvas.style.display = 'none';
+        if (startButton) startButton.disabled = true;
+        if (canvas) canvas.style.display = 'none';
     } else {
         rotate.style.display = 'none';
-        startButton.disabled = false;
+        if (startButton) startButton.disabled = false;
     }
 }
 
@@ -281,4 +305,7 @@ window.addEventListener('load', () => {
             impressumModal.classList.remove('show');
         }
     });
+
+
+
 });
