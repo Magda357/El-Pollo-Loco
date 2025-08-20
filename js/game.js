@@ -87,6 +87,40 @@ document.addEventListener('DOMContentLoaded', () => {
             impressumModal.classList.remove('show');
         }
     });
+
+    const fullscreenBtn = document.getElementById('fullscreen-btn');
+    const canvas = document.getElementById('canvas');
+
+    if (fullscreenBtn && canvas) {
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                // Canvas in den Fullscreen-Modus versetzen
+                if (canvas.requestFullscreen) {
+                    canvas.requestFullscreen();
+                } else if (canvas.webkitRequestFullscreen) { // Safari
+                    canvas.webkitRequestFullscreen();
+                } else if (canvas.msRequestFullscreen) { // IE11
+                    canvas.msRequestFullscreen();
+                }
+            } else {
+                // Fullscreen verlassen
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) { // Safari
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) { // IE11
+                    document.msExitFullscreen();
+                }
+            }
+        });
+    }
+
+    // Optional: Canvas nach Fullscreen wieder fokussieren
+    document.addEventListener('fullscreenchange', () => {
+        if (document.fullscreenElement === canvas) {
+            canvas.focus();
+        }
+    });
 });
 
 /**
@@ -197,7 +231,6 @@ function checkOrientation() {
     if (isPortrait) {
         rotate.style.display = 'flex';
         if (startButton) startButton.disabled = true;
-        if (canvas) canvas.style.display = 'none';
     } else {
         rotate.style.display = 'none';
         if (startButton) startButton.disabled = false;

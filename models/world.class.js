@@ -76,9 +76,7 @@ class World {
         this.endboss = this.level.enemies.find(e => e instanceof Endboss);
         this.level.endboss = this.endboss;
 
-        // Fullscreen icon setup
-        this.fullscreenIcon = new Image();
-        this.fullscreenIcon.src = 'img/instruction-bild/icons8-vollbild-48.png';
+
 
         this.iconX = this.canvas.width - 60;
         this.iconY = 10;
