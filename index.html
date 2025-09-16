@@ -6,10 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=no">
     <link rel="stylesheet" href="./style.css">
     <link rel="stylesheet" href="./responsive.css">
-
     <link rel="icon" type="image/png" href="img/favicon/mariachi.png">
     <title>El Pollo Loco</title>
-
     <script src="models/drawable-object.class.js"></script>
     <script src="models/movable-object.class.js"></script>
     <script src="models/character.class.js"></script>
@@ -37,35 +35,24 @@
 
     <div id="max-status-effect">🎉 Bottles and Coins Collected!🎉</div>
     <h1>El Pollo Loco</h1>
+    <div id="fullscreen" class="fullscreen">
+        <div id="start-screen" class="start-screen">
+            <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
+            <div id="start_buttons">
+                <button id="start-button" onclick="startGame()">START GAME</button>
+                <button id="showImpressumBtn">Impressum</button>
+            </div>
+        </div>
+        <div id="game-over-screen" style="display: none;">
+            <img src="img/You won, you lost/You lost.png" width="720" height="480" alt="Game over image">
+            <button onclick="restartGame()">Neu starten </button>
+        </div>
+        <div id="gewonnen-screen" style="display: none;">
+            <img src="img/You won, you lost/You Win A.png" alt="Game over image">
+            <button onclick="restartGame()">Neu starten </button>
+        </div>
+        <canvas id="canvas" width="720" height="480" style="display: none;"></canvas>
 
-    <div id="start-screen" class="start-screen">
-
-        <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
-    </div>
-    <div id="start_buttons">
-        <button id="start-button" onclick="startGame()">START GAME</button>
-        <button id="showImpressumBtn">Impressum</button>
-    </div>
-
-    <div id="game-over-screen" style="display: none;">
-        <img src="img/You won, you lost/You lost.png" width="720" height="480" alt="Game over image">
-        <button onclick="restartGame()">Neu starten </button>
-    </div>
-    <div id="gewonnen-screen" style="display: none;">
-        <img src="img/You won, you lost/You Win A.png" alt="Game over image">
-        <button onclick="restartGame()">Neu starten </button>
-    </div>
-    <div id="mute-div">
-        <button id="mute-button" class="mute-button">🔊</button>
-    </div>
-    <div id="fullscreen">
-        <canvas id="canvas" width="720" height="480" style="display: none;">
-
-        </canvas>
-        <button id="fullscreen-btn" class="fullscreen-btn">
-            <img src="/img/instruction-bild/icons8-vollbild-48.png" alt="Fullscreen" width="32" height="32">
-
-        </button>
     </div>
 
 

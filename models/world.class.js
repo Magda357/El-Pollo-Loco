@@ -66,11 +66,25 @@ class World {
         this.ctx = canvas.getContext('2d');
         this.canvas = canvas;
         this.keyboard = keyboard;
+
+
+        this.isMuted = false;
+        this.muteImg = new Image();
+        this.muteImg.src = 'img/instruction-bild/no-sound.png'; // Pfad zu deinem Mute-Icon
+        this.unmuteImg = new Image();
+        this.unmuteImg.src = 'img/instruction-bild/sound.png';
+
+        this.fullscreenImg = new Image();
+        this.fullscreenImg.src = 'img/instruction-bild/maximize.png';
+
+
         this.endbossStatusbarCreated = false;
         this.statusBarEndboss = null;
         this.endbossActivated = false;
         this.setWorld();
         this.run();
+
+
 
         // Find the endboss in the current level's enemies and assign it.
         this.endboss = this.level.enemies.find(e => e instanceof Endboss);
@@ -83,52 +97,11 @@ class World {
         this.iconWidth = 48;
         this.iconHeight = 48;
 
-        // Click event listener for fullscreen toggle
-        this.canvas.addEventListener('click', (event) => {
-            const rect = this.canvas.getBoundingClientRect();
-            const clickX = event.clientX - rect.left;
-            const clickY = event.clientY - rect.top;
 
-            const clickedFullscreenIcon =
-                clickX >= this.iconX &&
-                clickX <= this.iconX + this.iconWidth &&
-                clickY >= this.iconY &&
-                clickY <= this.iconY + this.iconHeight;
-
-            if (clickedFullscreenIcon) {
-                if (document.fullscreenElement === this.canvas) {
-                    this.exitFullscreen();
-                } else {
-                    this.enterFullscreen(this.canvas);
-                }
-            }
-        });
 
         this.draw();
     }
 
-    /**
-     * Requests fullscreen mode for the given element and sets up exit handlers.
-     * @param {HTMLElement} element - The element to make fullscreen.
-     */
-    enterFullscreen(element) {
-        const exitHandler = () => {
-            if (document.fullscreenElement) {
-                document.exitFullscreen();
-            }
-        };
-
-        if (element.requestFullscreen) {
-            element.requestFullscreen().then(() => {
-                document.addEventListener('click', exitHandler, { once: true });
-                document.addEventListener('keydown', exitHandler, { once: true });
-            });
-        } else if (element.webkitRequestFullscreen) {
-            element.webkitRequestFullscreen();
-            document.addEventListener('click', exitHandler, { once: true });
-            document.addEventListener('keydown', exitHandler, { once: true });
-        }
-    }
 
     /**
      * Assigns this world instance to the character and endboss (if any).
@@ -138,6 +111,20 @@ class World {
         if (this.level.endboss) {
             this.level.endboss.world = this;
         }
+    }
+
+    drawMuteIcon() {
+        const icon = this.isMuted ? this.muteImg : this.unmuteImg;
+        // Position oben rechts im Canvas
+        const x = this.canvas.width - 60;
+        const y = 20;
+        this.ctx.drawImage(icon, x, y, 40, 40);
+    }
+
+    drawFullscreenIcon() {
+        const x = this.canvas.width - 120;
+        const y = 20;
+        this.ctx.drawImage(this.fullscreenImg, x, y, 40, 40);
     }
 
     /**
@@ -397,8 +384,9 @@ class World {
         this.drawBackgroundObjects();
         this.drawStatusBars();
         this.drawForegroundObjects();
-        this.drawFullscreenIcon();
         this.scheduleNextFrame();
+        this.drawMuteIcon();
+        this.drawFullscreenIcon();
     }
 
     /**
@@ -450,14 +438,7 @@ class World {
         this.ctx.translate(-this.camera_x, 0);
     }
 
-    /**
-     * Draws the fullscreen toggle icon on the canvas.
-     */
-    drawFullscreenIcon() {
-        if (this.fullscreenIcon && this.fullscreenIcon.complete) {
-            this.ctx.drawImage(this.fullscreenIcon, this.iconX, this.iconY, this.iconWidth, this.iconHeight);
-        }
-    }
+
 
     /**
      * Schedules the next animation frame for continuous drawing.
@@ -511,4 +492,6 @@ class World {
         mo.x = mo.x * -1;
         this.ctx.restore();
     }
+
+
 }

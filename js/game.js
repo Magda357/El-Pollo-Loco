@@ -41,38 +41,12 @@ let sounds = {
  */
 let gameOverTriggered = false;
 
-/**
- * Controls whether all game sounds are muted.
- * @type {boolean}
- */
-let isMuted = false;
-
-/**
- * Reference to the mute button element.
- * @type {HTMLElement}
- */
-let muteButton;
-
-
-
-/**
- * Toggles the mute state for all sounds in the game.
- */
-// This function toggles the mute state for all game sounds and updates the mute button text accordingly.
-function toggleMute() {
-    isMuted = !isMuted;
-    Object.values(sounds).forEach(sound => sound.muted = isMuted);
-    muteButton.textContent = isMuted ? '🔇' : '🔊';
-}
 
 document.addEventListener('DOMContentLoaded', () => {
     const showImpressumBtn = document.getElementById('showImpressumBtn');
     const impressumModal = document.getElementById('impressumModal');
     const closeImpressumBtn = document.getElementById('closeImpressumBtn');
-    muteButton = document.getElementById('mute-button');
-    if (muteButton) {
-        muteButton.addEventListener('click', toggleMute);
-    }
+
 
     showImpressumBtn.addEventListener('click', () => {
         impressumModal.classList.add('show');
@@ -88,32 +62,33 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    const fullscreenBtn = document.getElementById('fullscreen-btn');
-    const canvas = document.getElementById('canvas');
+    // Fullscreen-Button-Logik
+    window.addEventListener('DOMContentLoaded', () => {
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const fullscreenContainer = document.getElementById('fullscreen'); // Das ist dein Container!
 
-    if (fullscreenBtn && canvas) {
-        fullscreenBtn.addEventListener('click', () => {
-            if (!document.fullscreenElement) {
-                // Canvas in den Fullscreen-Modus versetzen
-                if (canvas.requestFullscreen) {
-                    canvas.requestFullscreen();
-                } else if (canvas.webkitRequestFullscreen) { // Safari
-                    canvas.webkitRequestFullscreen();
-                } else if (canvas.msRequestFullscreen) { // IE11
-                    canvas.msRequestFullscreen();
+        if (fullscreenBtn && fullscreenContainer) {
+            fullscreenBtn.addEventListener('click', () => {
+                if (!document.fullscreenElement) {
+                    if (fullscreenContainer.requestFullscreen) {
+                        fullscreenContainer.requestFullscreen();
+                    } else if (fullscreenContainer.webkitRequestFullscreen) {
+                        fullscreenContainer.webkitRequestFullscreen();
+                    } else if (fullscreenContainer.msRequestFullscreen) {
+                        fullscreenContainer.msRequestFullscreen();
+                    }
+                } else {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
                 }
-            } else {
-                // Fullscreen verlassen
-                if (document.exitFullscreen) {
-                    document.exitFullscreen();
-                } else if (document.webkitExitFullscreen) { // Safari
-                    document.webkitExitFullscreen();
-                } else if (document.msExitFullscreen) { // IE11
-                    document.msExitFullscreen();
-                }
-            }
-        });
-    }
+            });
+        }
+    });
 
     // Optional: Canvas nach Fullscreen wieder fokussieren
     document.addEventListener('fullscreenchange', () => {
@@ -131,9 +106,10 @@ function startGame() {
         return;
     }
 
-    document.getElementById('mute-div').style.display = 'flex';
     document.getElementById('start-button').style.display = 'none';
     document.getElementById('showImpressumBtn').style.display = 'flex';
+
+
 
 
     canvas = document.getElementById('canvas');
@@ -145,7 +121,47 @@ function startGame() {
     document.querySelector('.touch-buttons').style.display = 'flex';
 
     world = new World(canvas, keyboard);
-    gameMusic();
+
+
+    // Klick-Erkennung für das Mute-Icon im Canvas
+    canvas.addEventListener('click', function (e) {
+        const rect = canvas.getBoundingClientRect();
+        const scaleX = canvas.width / rect.width;
+        const scaleY = canvas.height / rect.height;
+        const x = (e.clientX - rect.left) * scaleX;
+        const y = (e.clientY - rect.top) * scaleY;
+        // Prüfe, ob auf das Icon geklickt wurde
+        if (x > canvas.width - 60 && x < canvas.width - 20 && y > 20 && y < 60) {
+            world.isMuted = !world.isMuted;
+            Object.values(sounds).forEach(sound => {
+                sound.muted = world.isMuted;
+            });
+        }
+
+        // Fullscreen-Icon (rechts oben, links vom Mute)
+        if (x > canvas.width - 120 && x < canvas.width - 80 && y > 20 && y < 60) {
+            const fullscreenContainer = document.getElementById('fullscreen');
+            if (!document.fullscreenElement) {
+                if (fullscreenContainer.requestFullscreen) {
+                    fullscreenContainer.requestFullscreen();
+                } else if (fullscreenContainer.webkitRequestFullscreen) {
+                    fullscreenContainer.webkitRequestFullscreen();
+                } else if (fullscreenContainer.msRequestFullscreen) {
+                    fullscreenContainer.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
+            }
+        }
+    });
+
+
 }
 /**
   *   Pl ays the main background music in a loop.
@@ -168,7 +184,6 @@ function gameOver() {
     const gameOverScreen = document.getElementById("game-over-screen");
     canvas.style.display = 'none';
     gameOverScreen.style.display = 'block';
-    document.getElementById('mute-div').style.display = 'none';
     setTimeout(() => {
         sounds.victory_music.volume = 0.2;
         sounds.victory_music.loop = false;
@@ -184,7 +199,6 @@ function win() {
 
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
-    document.getElementById('mute-div').style.display = 'none';
 
     setTimeout(() => {
         sounds.victory_music.volume = 0.2;
