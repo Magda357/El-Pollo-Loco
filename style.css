@@ -2,28 +2,30 @@
 
 body {
     margin: 0;
-    width: 100%;
+    padding: 0;
+    font-family: 'Wendy One', sans-serif;
+}
+
+#game-content {
+    width: 100vw;
+    height: 100vh;
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0;
-    font-family: 'Wendy One', sans-serif;
-    background-image: url('img/5_background/2dcf96b8-6175-48f9-8576-f8ec72a5ef5e.png');
     background-size: cover;
+    background-image: url('img/5_background/2dcf96b8-6175-48f9-8576-f8ec72a5ef5e.png');
     background-repeat: no-repeat;
     background-attachment: fixed;
     background-position: center;
-    font-family: sans-serif;
     text-align: center;
-    overflow-x: hidden;
-    overflow-y: auto;
+    overflow: hidden;
 }
 
 canvas {
     position: static;
     background-color: black;
     cursor: none;
-    max-width: 100%;
+    max-width: 100vw;
     height: auto;
     left: 0;
 }
@@ -38,31 +40,19 @@ canvas:hover {
     display: block;
 }
 
-.start-screen {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
+#start-screen,
 #game-over-screen,
 #gewonnen-screen {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
 }
 
-.start-screen img,
+#start-screen img,
 #game-over-screen img,
 #gewonnen-screen img {
     width: 720px;
     height: 480px;
-
-}
-
-#canvas {
-    margin-bottom: 20px;
 }
 
 #start_buttons button,
@@ -70,15 +60,12 @@ canvas:hover {
 #gewonnen-screen button {
     font-family: 'Wendy One', sans-serif;
     font-size: 1.5rem;
-    padding: 0.5em 1.5em;
+    padding: 0.5em 1em;
     border: none;
-    bottom: 2px;
     background-color: #ff9900;
     color: white;
     border-radius: 10px;
     cursor: pointer;
-    transition: background-color 0.3s;
-    transition: opacity 0.4s ease;
 
 }
 
@@ -92,19 +79,17 @@ canvas:hover {
     right: 100px;
     margin-left: 250px;
     margin-top: 0;
-
 }
-
 
 #start_buttons button:hover,
 #game-over-screen button:hover,
 #gewonnen-screen button:hover,
 #showImpressumBtn:hover {
-    background-color: rgb(173, 80, 2 6);
+    background-color: rgb(244, 125, 27);
+    color: rgb(21, 79, 146);
     box-shadow: 4px 4px 4px rgba(53, 53, 53, 0.5);
     transform: scale(1.1);
-    transition: transform 200ms ease;
-
+    transition: transform 170ms ease;
 }
 
 .instruction-box {
@@ -253,11 +238,6 @@ h1 {
 }
 
 
-.touch-buttons {
-    display: none !important;
-
-}
-
 .touch-btn {
     pointer-events: auto;
     width: 60px;
@@ -269,15 +249,12 @@ h1 {
     background-color: rgba(255, 153, 0, 0.85);
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     color: #fff;
-    pointer-events: auto;
 }
 
 .touch-btn.jump {
     right: 90px;
     top: -330px;
 }
-
-
 
 .touch-btn.throw {
     right: 10px;
@@ -329,7 +306,6 @@ h1 {
     font-family: 'Wendy One', sans-serif;
 }
 
-
 /* Impressum Modal Styles */
 #impressumModal {
     display: none;
@@ -366,17 +342,17 @@ h1 {
     right: 10px;
     background: transparent;
     border: none;
-    font-size: 20px;
+    font-size: 28px;
     cursor: pointer;
 }
 
 #closeImpressumBtn:hover {
     transform: scale(1.3);
-    color: rgb(177, 72, 6);
 }
 
 #impressumModal p {
-    margin: 8px 0;
+    margin: 15px 0;
+
 }
 
 #impressumModal .copyright {
@@ -409,7 +385,6 @@ h1 {
 
 #fullscreen:fullscreen {
 
-    border: 5px solid #602e6e;
     width: 100%;
     height: 100%;
     position: fixed;

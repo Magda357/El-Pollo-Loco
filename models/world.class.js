@@ -77,27 +77,20 @@ class World {
         this.fullscreenImg = new Image();
         this.fullscreenImg.src = 'img/instruction-bild/maximize.png';
 
-
         this.endbossStatusbarCreated = false;
         this.statusBarEndboss = null;
         this.endbossActivated = false;
         this.setWorld();
         this.run();
 
-
-
         // Find the endboss in the current level's enemies and assign it.
         this.endboss = this.level.enemies.find(e => e instanceof Endboss);
         this.level.endboss = this.endboss;
-
-
 
         this.iconX = this.canvas.width - 60;
         this.iconY = 10;
         this.iconWidth = 48;
         this.iconHeight = 48;
-
-
 
         this.draw();
     }

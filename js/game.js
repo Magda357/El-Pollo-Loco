@@ -114,11 +114,9 @@ function startGame() {
 
     document.getElementById('start-screen').style.display = 'none';
     canvas.style.display = 'block';
-    document.querySelector('.touch-buttons').style.display = 'flex';
-
     world = new World(canvas, keyboard);
     gameMusic();
-
+    showTouchButtons();
     // Klick-Erkennung für das Mute-Icon im Canvas
     canvas.addEventListener('click', function (e) {
         const rect = canvas.getBoundingClientRect();
@@ -156,6 +154,18 @@ function startGame() {
             }
         }
     });
+
+
+}
+
+
+function showTouchButtons() {
+    if (window.innerWidth < 1024) {
+        document.querySelector('.touch-buttons').style.display = 'flex';
+    }
+}
+function hideTouchButtons() {
+    document.querySelector('.touch-buttons').style.display = 'none';
 }
 /**
   *   Plays the main background music in a loop.
@@ -165,6 +175,7 @@ function gameMusic() {
     sounds.game_music.loop = true;
     sounds.game_music.play();
 }
+
 /**
  * Displays the game-over screen and stops all gameplay.
  */
@@ -172,21 +183,16 @@ function gameOver() {
     if (gameOverTriggered) return;
     gameOverTriggered = true;
 
-    Object.values(sounds).forEach(sound => {
-        sound.pause();
-        sound.currentTime = 0;
-        sound.muted = true;
-    });
-
-    setTimeout(() => {
-        gameOverMusic();
-    }, 3000);
 
 
     const gameOverScreen = document.getElementById("game-over-screen");
     canvas.style.display = 'none';
     gameOverScreen.style.display = 'block';
-
+    document.querySelector('.touch-buttons').style.display = 'none';
+    hideTouchButtons();
+    setTimeout(() => {
+        GameOverMusic();
+    }, 400);
 }
 
 function victoryMusic() {
@@ -195,33 +201,25 @@ function victoryMusic() {
     sounds.victory_music.play();
 }
 
-function gameOverMusic() {
-    sounds.dead_music.muted = false;
+function GameOverMusic() {
+    sounds.dead_music.currentTime = 0; // Start von vorne
     sounds.dead_music.volume = 0.4;
     sounds.dead_music.loop = false;
-    sounds.dead_music.currentTime = 0;
     sounds.dead_music.play();
 }
 /**
  * Displays the win screen and plays a victory sound.
  */
 function win() {
+    hideTouchButtons();
+
     const gewonnenScreen = document.getElementById("gewonnen-screen");
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
-
-    // Alle anderen Sounds stoppen
-    Object.values(sounds).forEach(sound => {
-        sound.pause();
-        sound.currentTime = 0;
-        sound.muted = true;
-    });
-
+    sounds.game_music.pause();
     setTimeout(() => {
         victoryMusic();
-    }, 3000);
-
-
+    }, 400);
 }
 
 /**
@@ -245,7 +243,7 @@ function restartGame() {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('gewonnen-screen').style.display = 'none';
-
+    hideTouchButtons();
     const canvas = document.getElementById('canvas');
     canvas.style.display = 'block';
 

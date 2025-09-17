@@ -31,84 +31,86 @@
 </head>
 
 <body>
+    <div id="game-content">
 
+        <div id="max-status-effect">🎉All Bottles and Coins Collected!🎉</div>
+        <h1>El Pollo Loco</h1>
 
-    <div id="max-status-effect">🎉 Bottles and Coins Collected!🎉</div>
-    <h1>El Pollo Loco</h1>
-    <div id="fullscreen" class="fullscreen">
-        <div id="start-screen" class="start-screen">
-            <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
-            <div id="start_buttons">
-                <button id="start-button" onclick="startGame()">START GAME</button>
-                <button id="showImpressumBtn">Impressum</button>
+        <div id="fullscreen" class="fullscreen">
+            <div id="start-screen" class="start-screen">
+                <img src="img/9_intro_outro_screens/start/startscreen_1.png" alt="Start game image">
+                <div id="start_buttons">
+                    <button id="start-button" onclick="startGame()">Start Game</button>
+                    <button id="showImpressumBtn">Imprint</button>
+                </div>
+            </div>
+            <div id="game-over-screen" style="display: none;">
+                <img src="img/You won, you lost/You lost.png" width="720" height="480" alt="Game over image">
+                <button onclick="restartGame()">New Start </button>
+            </div>
+            <div id="gewonnen-screen" style="display: none;">
+                <img src="img/You won, you lost/You Win A.png" alt="Game over image">
+                <button onclick="restartGame()">Neu starten </button>
+            </div>
+            <canvas id="canvas" width="720" height="480" style="display: none;"></canvas>
+            <!-- Touch buttons for mobile devices -->
+            <div class="touch-buttons" style="display: none;">
+                <div id="group-left">
+                    <button id="btn-left" class="touch-btn">⬅️</button>
+                    <button id="btn-right" class="touch-btn">➡️</button>
+                </div>
+                <div id="group-right">
+                    <button id="btn-jump" class="touch-btn jump">⬆️</button>
+                    <button id="btn-throw" class="touch-btn throw">
+                        <img src="img/6_salsa_bottle/salsa_bottle.png" alt="Ketchup" width="32" height="32"
+                            style="rotate: 20deg;">
+                    </button>
+                </div>
             </div>
         </div>
-        <div id="game-over-screen" style="display: none;">
-            <img src="img/You won, you lost/You lost.png" width="720" height="480" alt="Game over image">
-            <button onclick="restartGame()">Neu starten </button>
-        </div>
-        <div id="gewonnen-screen" style="display: none;">
-            <img src="img/You won, you lost/You Win A.png" alt="Game over image">
-            <button onclick="restartGame()">Neu starten </button>
-        </div>
-        <canvas id="canvas" width="720" height="480" style="display: none;"></canvas>
 
-    </div>
+        <div class="instruction-box">
+            <p class="instruction">
+                <span class="tastatur">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M15 6L9 12L15 18" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
+                </span> Move Left
+            </p>
+            <p class="instruction">
+                <span class="tastatur">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M9 6L15 12L9 18" stroke="white" stroke-width="2" stroke-linecap="round"
+                            stroke-linejoin="round" />
+                    </svg>
 
+                </span> Move Right
+            </p>
+            <p class="instruction"> <span class="tastatur">Space </span> Jump </p>
+            <p class="instruction"> <span class="tastatur"> D </span> Throw bottle</p>
 
-    <div class="instruction-box">
-        <p class="instruction">
-            <span class="tastatur">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M15 6L9 12L15 18" stroke="white" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-            </span> Left — Move Left
-        </p>
-        <p class="instruction">
-            <span class="tastatur">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M9 6L15 12L9 18" stroke="white" stroke-width="2" stroke-linecap="round"
-                        stroke-linejoin="round" />
-                </svg>
-
-            </span> Right — Move Right
-        </p>
-        <p class="instruction"> <span class="tastatur">Space </span> Jump </p>
-        <p class="instruction"> <span class="tastatur"> D </span> Throw bottle</p>
-        </p>
-
-    </div>
-
-    <div id="rotate">
-        <p> Please rotate your device! </p>
-    </div>
-    <!-- Touch buttons for mobile devices -->
-    <div class="touch-buttons" style="display: none;">
-        <div id="group-left">
-            <button id="btn-left" class="touch-btn">⬅️</button>
-            <button id="btn-right" class="touch-btn">➡️</button>
-        </div>
-        <div id="group-right">
-            <button id="btn-jump" class="touch-btn jump">⬆️</button>
-            <button id="btn-throw" class="touch-btn throw">🧪</button>
-        </div>
-    </div>
-
-
-    <!-- Modal window for Impressum -->
-    <div id="impressumModal">
-        <div class="impressum-content">
-            <h2>Impressum</h2>
-            <p><strong> Name des Verantwortlichen :</strong> <br> Magda Danielyan</p>
-            <p> <strong>Anschrift:</strong> 32839 Steinheim <br>Deutschland</p>
-            <p><strong>Kontakt:</strong><br>
-                E-Mail: mdanielyan50@gmail.com</p>
-            <div id="pic"><img src="img/favicon/mariachi.png" alt="Mariachi" width="200px" height="200px"></div>
-            <p class="copyright">Alle Rechte vorbehalten © 2025 </p>
-            <button id="closeImpressumBtn">&times;</button>
         </div>
 
+        <div id="rotate">
+            <img src="img/instruction-bild/mobile-rotation_9482500.png" alt="Rotate your device" width="120"
+                height="120"><br>
+            <p> Please rotate your device! </p>
+        </div>
+
+        <!-- Modal window for Impressum -->
+        <div id="impressumModal">
+            <div class="impressum-content">
+                <h2>Imprint</h2>
+                <p><strong> Name of the person responsible:</strong> <br> Magda Danielyan</p>
+                <p> <strong>Address:</strong> 32839 Steinheim <br>Deutschland</p>
+                <p><strong>Contact:</strong><br>
+                    E-Mail: mdanielyan50@gmail.com</p>
+                <div id="pic"><img src="img/favicon/mariachi.png" alt="Mariachi" width="200px" height="200px"></div>
+                <p class="copyright">All rights reserved © 2025 </p>
+                <button id="closeImpressumBtn">&times;</button>
+            </div>
+        </div>
     </div>
 </body>
 
