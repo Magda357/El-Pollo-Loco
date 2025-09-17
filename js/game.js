@@ -47,7 +47,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const impressumModal = document.getElementById('impressumModal');
     const closeImpressumBtn = document.getElementById('closeImpressumBtn');
 
-
     showImpressumBtn.addEventListener('click', () => {
         impressumModal.classList.add('show');
     });
@@ -109,9 +108,6 @@ function startGame() {
     document.getElementById('start-button').style.display = 'none';
     document.getElementById('showImpressumBtn').style.display = 'flex';
 
-
-
-
     canvas = document.getElementById('canvas');
     initLevel();
     initMobileControls();
@@ -121,7 +117,7 @@ function startGame() {
     document.querySelector('.touch-buttons').style.display = 'flex';
 
     world = new World(canvas, keyboard);
-
+    gameMusic();
 
     // Klick-Erkennung für das Mute-Icon im Canvas
     canvas.addEventListener('click', function (e) {
@@ -160,18 +156,15 @@ function startGame() {
             }
         }
     });
-
-
 }
 /**
-  *   Pl ays the main background music in a loop.
+  *   Plays the main background music in a loop.
  */
 function gameMusic() {
     sounds.game_music.volume = 0.2;
     sounds.game_music.loop = true;
     sounds.game_music.play();
 }
-
 /**
  * Displays the game-over screen and stops all gameplay.
  */
@@ -179,32 +172,56 @@ function gameOver() {
     if (gameOverTriggered) return;
     gameOverTriggered = true;
 
-    sounds.game_music.pause();
+    Object.values(sounds).forEach(sound => {
+        sound.pause();
+        sound.currentTime = 0;
+        sound.muted = true;
+    });
+
+    setTimeout(() => {
+        gameOverMusic();
+    }, 3000);
+
 
     const gameOverScreen = document.getElementById("game-over-screen");
     canvas.style.display = 'none';
     gameOverScreen.style.display = 'block';
-    setTimeout(() => {
-        sounds.victory_music.volume = 0.2;
-        sounds.victory_music.loop = false;
-        sounds.victory_music.play();
-    }, 400);
+
 }
 
+function victoryMusic() {
+    sounds.victory_music.volume = 0.2;
+    sounds.victory_music.loop = false;
+    sounds.victory_music.play();
+}
+
+function gameOverMusic() {
+    sounds.dead_music.muted = false;
+    sounds.dead_music.volume = 0.4;
+    sounds.dead_music.loop = false;
+    sounds.dead_music.currentTime = 0;
+    sounds.dead_music.play();
+}
 /**
  * Displays the win screen and plays a victory sound.
  */
 function win() {
     const gewonnenScreen = document.getElementById("gewonnen-screen");
-
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
 
+    // Alle anderen Sounds stoppen
+    Object.values(sounds).forEach(sound => {
+        sound.pause();
+        sound.currentTime = 0;
+        sound.muted = true;
+    });
+
     setTimeout(() => {
-        sounds.victory_music.volume = 0.2;
-        sounds.victory_music.loop = false;
-        sounds.victory_music.play();
-    }, 400);
+        victoryMusic();
+    }, 3000);
+
+
 }
 
 /**
@@ -212,6 +229,8 @@ function win() {
  */
 function restartGame() {
     gameOverTriggered = false;
+    sounds.dead_music.pause();
+    sounds.dead_music.currentTime = 0;
 
     if (world) {
         world.clearWorld();
@@ -352,7 +371,4 @@ window.addEventListener('load', () => {
             impressumModal.classList.remove('show');
         }
     });
-
-
-
 });

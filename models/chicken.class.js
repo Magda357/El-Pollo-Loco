@@ -107,6 +107,7 @@ class Chicken extends MovableObject {
      */
     playSound() {
         sounds.chicken_music.volume = 0.1;
+        sounds.victory_music.loop = false;
         sounds.chicken_music.play();
     }
 }
