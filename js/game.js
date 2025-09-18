@@ -48,52 +48,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const impressumModal = document.getElementById('impressumModal');
     const closeImpressumBtn = document.getElementById('closeImpressumBtn');
 
+
     showImpressumBtn.addEventListener('click', () => {
         impressumModal.classList.add('show');
     });
-
     closeImpressumBtn.addEventListener('click', () => {
         impressumModal.classList.remove('show');
     });
-
     impressumModal.addEventListener('click', (e) => {
         if (e.target === impressumModal) {
             impressumModal.classList.remove('show');
-        }
-    });
-
-    // Fullscreen-Button-Logik
-    window.addEventListener('DOMContentLoaded', () => {
-        const fullscreenBtn = document.getElementById('fullscreen-btn');
-        const fullscreenContainer = document.getElementById('fullscreen'); // Das ist dein Container!
-
-        if (fullscreenBtn && fullscreenContainer) {
-            fullscreenBtn.addEventListener('click', () => {
-                if (!document.fullscreenElement) {
-                    if (fullscreenContainer.requestFullscreen) {
-                        fullscreenContainer.requestFullscreen();
-                    } else if (fullscreenContainer.webkitRequestFullscreen) {
-                        fullscreenContainer.webkitRequestFullscreen();
-                    } else if (fullscreenContainer.msRequestFullscreen) {
-                        fullscreenContainer.msRequestFullscreen();
-                    }
-                } else {
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                }
-            });
-        }
-    });
-
-    // Optional: Canvas nach Fullscreen wieder fokussieren
-    document.addEventListener('fullscreenchange', () => {
-        if (document.fullscreenElement === canvas) {
-            canvas.focus();
         }
     });
 });
@@ -116,6 +80,7 @@ function startGame() {
     world = new World(canvas, keyboard);
     gameMusic();
     showTouchButtons();
+
 
     // Klick-Erkennung für das Mute-Icon im Canvas
     canvas.addEventListener('click', function (e) {
@@ -158,25 +123,14 @@ function startGame() {
 
 }
 
-
 function showTouchButtons() {
-    // Nur anzeigen, wenn die Canvas sichtbar ist (also Spiel läuft)
-    if (
-        window.innerWidth < 1420 &&
-        canvas.style.display === 'block' &&
-        document.getElementById('start-screen').style.display === 'none' &&
-        document.getElementById('game-over-screen').style.display === 'none' &&
-        document.getElementById('gewonnen-screen').style.display === 'none'
-    ) {
-        document.querySelector('.touch-buttons').style.display = 'flex';
-    } else {
-        document.querySelector('.touch-buttons').style.display = 'none';
-    }
+    document.getElementById('fullscreen').classList.add('game-active');
 }
 
 function hideTouchButtons() {
-    document.querySelector('.touch-buttons').style.display = 'none';
+    document.getElementById('fullscreen').classList.remove('game-active');
 }
+
 /**
   *   Plays the main background music in a loop.
  */
@@ -192,16 +146,11 @@ function gameMusic() {
 function gameOver() {
     if (gameOverTriggered) return;
     gameOverTriggered = true;
-
-
-
     const gameOverScreen = document.getElementById("game-over-screen");
     canvas.style.display = 'none';
     gameOverScreen.style.display = 'block';
-    document.querySelector('.touch-buttons').style.display = 'none';
     hideTouchButtons();
     stopAllSounds();
-
 }
 
 function victoryMusic() {
@@ -210,16 +159,13 @@ function victoryMusic() {
         if (key !== 'victory_music') {
             sounds[key].pause();
             sounds[key].currentTime = 0;
-            allsounds[key].muted = true;
+            sounds[key].muted = true;
         }
     }
     sounds.victory_music.volume = 0.2;
     sounds.victory_music.loop = false;
     sounds.victory_music.play();
 }
-
-
-
 /**
  * Displays the win screen and plays a victory sound.
  */
@@ -229,20 +175,13 @@ function win() {
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
     sounds.game_music.pause();
+    hideTouchButtons();
     setTimeout(() => {
         victoryMusic();
     }, 400);
-}
-function stopAllSounds() {
-    for (let i in sounds) {
-        console.log('Stopping: ${i}, paused: ${sounds[i].paused}, volume: ${sounds[i].volume}');
-        sounds[i].pause();
-        sounds[i].volume = 0;
-        sounds[i].currentTime = 0;
-        console.log(`After stop: ${i}, paused: ${sounds[i].paused}, volume: ${sounds[i].volume}`);
 
-    }
 }
+
 /**
  * Restarts the game from the beginning by resetting all states.
  */
@@ -264,11 +203,11 @@ function restartGame() {
     document.getElementById('start-screen').style.display = 'none';
     document.getElementById('game-over-screen').style.display = 'none';
     document.getElementById('gewonnen-screen').style.display = 'none';
-    hideTouchButtons();
     const canvas = document.getElementById('canvas');
     canvas.style.display = 'block';
-
+    showTouchButtons();
     startGame();
+
 }
 
 /**
