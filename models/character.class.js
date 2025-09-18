@@ -188,7 +188,6 @@ class Character extends MovableObject {
             this.playAnimation(this.IMAGES_DEAD);
             this.playSound_die();
             gameOver();
-            this.stopAllSounds();
             return true;
         }
         return false;
@@ -229,7 +228,10 @@ class Character extends MovableObject {
         if (timeSinceLastAction > 10000) {
             this.playAnimation(this.IMAGES_SLEEPING);
             this.playSound_sleep();
+            this.stopSound_running();
             return true;
+        } else {
+            this.stopSound_sleep();
         }
         return false;
     }
@@ -245,7 +247,10 @@ class Character extends MovableObject {
             this.world.keyboard.SPACE) {
             this.playAnimation(this.IMAGES_WALKING);
             this.playSound_running();
+            this.stopSound_sleep();
             return true;
+        } else {
+            this.stopSound_running();
         }
         return false;
     }
@@ -278,13 +283,13 @@ class Character extends MovableObject {
     die() {
         this.isDead = true;
         this.speed = 0;
-        sounds.dead_music.pause();
-        sounds.dead_music.currentTime = 0;
+        this.playSound_die();
     }
 
     /** Plays death sound effect. */
     playSound_die() {
         sounds.dead_music.volume = 0.8;
+        sounds.dead_music.loop = false;
         sounds.dead_music.play();
     }
 
@@ -296,29 +301,42 @@ class Character extends MovableObject {
 
     /** Plays jump sound effect. */
     playSound_jump() {
-        sounds.jumping_music.volume = 0.9;
+        sounds.jumping_music.loop = false;
+        sounds.jumping_music.volume = 0.5;
         sounds.jumping_music.play();
     }
 
     /** Plays running sound effect. */
     playSound_running() {
-        sounds.running_music.volume = 0.8;
-        sounds.running_music.play();
+        if (sounds.running_music.paused) {
+            sounds.running_music.volume = 0.8;
+            sounds.running_music.loop = true;
+            sounds.running_music.play();
+        }
+    }
+
+    stopSound_running() {
+        if (!sounds.running_music.paused) {
+            sounds.running_music.pause();
+            sounds.running_music.currentTime = 0;
+        }
     }
 
     /** Plays sleep sound effect. */
     playSound_sleep() {
-        sounds.sleep_music.volume = 0.4;
-        sounds.running_music.play();
-    }
-
-    /**
-     * Stops all currently playing sounds.
-     */
-    stopAllSounds() {
-        for (let i in sounds) {
-            sounds[i].pause();
-            sounds[i].currentTime = 0;
+        if (sounds.sleep_music.paused) {
+            sounds.sleep_music.volume = 0.4;
+            sounds.sleep_music.loop = true;
+            sounds.sleep_music.play();
         }
     }
+
+    stopSound_sleep() {
+        if (!sounds.sleep_music.paused) {
+            sounds.sleep_music.pause();
+            sounds.sleep_music.currentTime = 0;
+        }
+    }
+
+
 }

@@ -82,8 +82,9 @@ class SmallChicken extends MovableObject {
     die() {
         this.isDead = true;
         this.speed = 0;
-        sounds.chicken_music.pause();
         sounds.chicken_music.currentTime = 0;
+        sounds.chicken_music.pause();
+
     }
 
     /**

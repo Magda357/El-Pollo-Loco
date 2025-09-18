@@ -24,6 +24,7 @@ let sounds = {
     dead_music: new Audio('audio/dead.mp3'),
     coin_collection: new Audio('audio/coin.mp3'),
     bottle_collection: new Audio('audio/bottle-opening-wine-cork-pop-352701.mp3'),
+    bottle_collection2: new Audio('audio/collect_bottle.mp3'),
     game_music: new Audio('audio/theme-song.mp3'),
     hurt_music: new Audio('audio/hurt.mp3'),
     jumping_music: new Audio('audio/jumping.mp3'),
@@ -107,16 +108,15 @@ function startGame() {
 
     document.getElementById('start-button').style.display = 'none';
     document.getElementById('showImpressumBtn').style.display = 'flex';
-
     canvas = document.getElementById('canvas');
     initLevel();
     initMobileControls();
-
     document.getElementById('start-screen').style.display = 'none';
     canvas.style.display = 'block';
     world = new World(canvas, keyboard);
     gameMusic();
     showTouchButtons();
+
     // Klick-Erkennung für das Mute-Icon im Canvas
     canvas.addEventListener('click', function (e) {
         const rect = canvas.getBoundingClientRect();
@@ -160,10 +160,20 @@ function startGame() {
 
 
 function showTouchButtons() {
-    if (window.innerWidth < 1024) {
+    // Nur anzeigen, wenn die Canvas sichtbar ist (also Spiel läuft)
+    if (
+        window.innerWidth < 1420 &&
+        canvas.style.display === 'block' &&
+        document.getElementById('start-screen').style.display === 'none' &&
+        document.getElementById('game-over-screen').style.display === 'none' &&
+        document.getElementById('gewonnen-screen').style.display === 'none'
+    ) {
         document.querySelector('.touch-buttons').style.display = 'flex';
+    } else {
+        document.querySelector('.touch-buttons').style.display = 'none';
     }
 }
+
 function hideTouchButtons() {
     document.querySelector('.touch-buttons').style.display = 'none';
 }
@@ -190,29 +200,31 @@ function gameOver() {
     gameOverScreen.style.display = 'block';
     document.querySelector('.touch-buttons').style.display = 'none';
     hideTouchButtons();
-    setTimeout(() => {
-        GameOverMusic();
-    }, 400);
+    stopAllSounds();
+
 }
 
 function victoryMusic() {
+    // Stoppe alle anderen Sounds
+    for (let key in sounds) {
+        if (key !== 'victory_music') {
+            sounds[key].pause();
+            sounds[key].currentTime = 0;
+            allsounds[key].muted = true;
+        }
+    }
     sounds.victory_music.volume = 0.2;
     sounds.victory_music.loop = false;
     sounds.victory_music.play();
 }
 
-function GameOverMusic() {
-    sounds.dead_music.currentTime = 0; // Start von vorne
-    sounds.dead_music.volume = 0.4;
-    sounds.dead_music.loop = false;
-    sounds.dead_music.play();
-}
+
+
 /**
  * Displays the win screen and plays a victory sound.
  */
 function win() {
     hideTouchButtons();
-
     const gewonnenScreen = document.getElementById("gewonnen-screen");
     canvas.style.display = 'none';
     gewonnenScreen.style.display = 'block';
@@ -221,7 +233,16 @@ function win() {
         victoryMusic();
     }, 400);
 }
+function stopAllSounds() {
+    for (let i in sounds) {
+        console.log('Stopping: ${i}, paused: ${sounds[i].paused}, volume: ${sounds[i].volume}');
+        sounds[i].pause();
+        sounds[i].volume = 0;
+        sounds[i].currentTime = 0;
+        console.log(`After stop: ${i}, paused: ${sounds[i].paused}, volume: ${sounds[i].volume}`);
 
+    }
+}
 /**
  * Restarts the game from the beginning by resetting all states.
  */
@@ -289,14 +310,12 @@ function initMobileControls() {
         const btn = document.getElementById(btnId);
 
         btn.addEventListener('touchstart', (e) => {
-            e.preventDefault();
             keyboard[key] = true;
-        });
+        }, { passive: true });
 
         btn.addEventListener('touchend', (e) => {
-            e.preventDefault();
             keyboard[key] = false;
-        });
+        }, { passive: true });
     });
 }
 

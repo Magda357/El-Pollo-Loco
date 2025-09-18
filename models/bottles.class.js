@@ -56,8 +56,8 @@ class Bottle extends MovableObject {
      * Plays the sound effect when the bottle is collected by the player.
      */
     playsound() {
-        sounds.bottle_collection.volume = 0.9;
-        sounds.bottle_collection.currentTime = 0;
-        sounds.bottle_collection.play();
+        sounds.bottle_collection2.currentTime = 0;
+        sounds.bottle_collection2.volume = 1;
+        sounds.bottle_collection2.play();
     }
 }
