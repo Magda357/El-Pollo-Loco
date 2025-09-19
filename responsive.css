@@ -24,7 +24,7 @@
     }
 
     .game-active .touch-buttons {
-        display: flex;
+        display: flex !important;
         z-index: 1000;
         justify-content: space-between;
         align-items: center;
@@ -87,6 +87,11 @@
         margin-bottom: 70px !important;
         padding-top: 10px !important;
     }
+
+    .game-active .touch-buttons {
+        display: flex !important;
+
+    }
 }
 
 /*===== (Mobile) ===== */
@@ -114,7 +119,10 @@
         max-height: 100vh;
     }
 
+    .game-active .touch-buttons {
+        display: flex !important;
 
+    }
 
     #start-screen img,
     #game-over-screen img,
@@ -156,8 +164,4 @@
         font-size: 1rem;
         margin-top: -50px;
     }
-
-
-
-
 }
